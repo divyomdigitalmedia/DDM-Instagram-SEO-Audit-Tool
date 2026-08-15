@@ -147,93 +147,21 @@ console.log("Instagram audit data:", auditData);
     
     console.log("Instagram user connected:", profileData.username);
 
-    res.send(`
-      <!DOCTYPE html>
+    const profile = {
+      id: profileData.id || userId,
+      username: profileData.username || ""
+    };
 
-      <html>
+    const websiteUrl =
+      "https://divyomdigitalmedia.github.io/DDM-Instagram-SEO-Audit-Tool/";
 
-      <head>
+    const redirectUrl =
+      websiteUrl +
+      "?instagram_connected=true" +
+      "&username=" +
+      encodeURIComponent(profile.username);
 
-        <title>Instagram Connected</title>
-
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1"
-        >
-
-        <style>
-
-          body {
-            font-family: Arial, sans-serif;
-            background: #08090d;
-            color: white;
-            text-align: center;
-            padding: 70px 20px;
-          }
-
-          .box {
-            max-width: 550px;
-            margin: auto;
-            padding: 35px;
-            background: #11131a;
-            border: 1px solid #2a2d38;
-            border-radius: 18px;
-          }
-
-          h1 {
-            color: #a78bfa;
-          }
-
-          p {
-            color: #aaa;
-            line-height: 1.6;
-          }
-
-          .username {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 20px 0;
-          }
-
-        </style>
-
-      </head>
-
-      <body>
-
-        <div class="box">
-
-          <h1>Instagram Connected ✓</h1>
-
-          <p>Your Instagram account was successfully connected.</p>
-
-          <div class="username">
-            @${escapeHtml(profileData.username || "Instagram User")}
-          </div>
-
-          <p>
-            We successfully received your Instagram profile data.
-          </p>
-
-          <p>
-            Your full SEO audit can now be generated.
-          </p>
-
-        </div>
-
-      </body>
-
-      </html>
-    `);
-
-  } catch (error) {
-
-    console.error("Instagram OAuth error:", error);
-
-    res.status(500).send(`
-      <h2>Instagram Connection Error</h2>
-      <p>Something went wrong while connecting Instagram.</p>
-    `);
+    return res.redirect(redirectUrl);
   }
 });
 
