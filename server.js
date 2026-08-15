@@ -8,8 +8,15 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
+const APP_ID = process.env.INSTAGRAM_APP_ID;
+const APP_SECRET = process.env.INSTAGRAM_APP_SECRET;
+
+const REDIRECT_URI =
+  "https://ddm-instagram-seo-audit-tool.onrender.com/auth/instagram/callback";
+
+
 // -------------------------
-// Basic routes
+// Home
 // -------------------------
 
 app.get("/", (req, res) => {
@@ -20,6 +27,11 @@ app.get("/", (req, res) => {
   });
 });
 
+
+// -------------------------
+// Health
+// -------------------------
+
 app.get("/health", (req, res) => {
   res.json({
     status: "ok"
@@ -28,10 +40,10 @@ app.get("/health", (req, res) => {
 
 
 // -------------------------
-// Instagram OAuth callback
+// Instagram OAuth Callback
 // -------------------------
 
-app.get("/auth/instagram/callback", (req, res) => {
+app.get("/auth/instagram/callback", async (req, res) => {
 
   const code = req.query.code;
 
@@ -42,65 +54,181 @@ app.get("/auth/instagram/callback", (req, res) => {
     `);
   }
 
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Instagram Connected</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          background: #08090d;
-          color: white;
-          text-align: center;
-          padding: 80px 20px;
-        }
+  if (!APP_ID || !APP_SECRET) {
+    return res.status(500).send(`
+      <h2>Server Configuration Error</h2>
+      <p>Instagram API credentials are not configured.</p>
+    `);
+  }
 
-        .box {
-          max-width: 500px;
-          margin: auto;
-          padding: 35px;
-          background: #11131a;
-          border: 1px solid #2a2d38;
-          border-radius: 18px;
-        }
+  try {
 
-        h1 {
-          color: #a78bfa;
-        }
+    // Exchange authorization code for access token
+    const tokenResponse = await fetch(
+      "https://api.instagram.com/oauth/access_token",
+      {
+        method: "POST",
 
-        p {
-          color: #aaa;
-          line-height: 1.6;
-        }
-      </style>
-    </head>
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
 
-    <body>
+        body: new URLSearchParams({
+          client_id: APP_ID,
+          client_secret: APP_SECRET,
+          grant_type: "authorization_code",
+          redirect_uri: REDIRECT_URI,
+          code: code
+        })
+      }
+    );
 
-      <div class="box">
+    const tokenData = await tokenResponse.json();
 
-        <h1>Instagram Connected ✓</h1>
+    if (!tokenResponse.ok || tokenData.error_type) {
 
-        <p>
-          Your Instagram authorization was received successfully.
-        </p>
+      console.error("Instagram token error:", tokenData);
 
-        <p>
-          The secure token exchange will be connected in the next step.
-        </p>
+      return res.status(400).send(`
+        <h2>Instagram Token Error</h2>
+        <p>Instagram did not return an access token.</p>
+        <p>Please try connecting again.</p>
+      `);
+    }
 
-      </div>
+    const accessToken = tokenData.access_token;
+    const userId = tokenData.user_id;
 
-    </body>
-    </html>
-  `);
+    if (!accessToken) {
+
+      return res.status(400).send(`
+        <h2>Instagram Token Error</h2>
+        <p>No access token was returned.</p>
+      `);
+    }
+
+
+    // --------------------------------
+    // Get basic Instagram profile data
+    // --------------------------------
+
+    const profileResponse = await fetch(
+      `https://graph.instagram.com/v23.0/${userId}?fields=id,username,name,profile_picture_url,biography,followers_count,follows_count,media_count&access_token=${encodeURIComponent(accessToken)}`
+    );
+
+    const profileData = await profileResponse.json();
+
+    if (!profileResponse.ok) {
+
+      console.error("Instagram profile error:", profileData);
+
+      return res.status(400).send(`
+        <h2>Instagram Profile Error</h2>
+        <p>Authorization succeeded, but profile data could not be loaded.</p>
+      `);
+    }
+
+
+    // --------------------------------
+    // IMPORTANT:
+    // Do not display the access token.
+    // --------------------------------
+
+    console.log("Instagram user connected:", profileData.username);
+
+    res.send(`
+      <!DOCTYPE html>
+
+      <html>
+
+      <head>
+
+        <title>Instagram Connected</title>
+
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1"
+        >
+
+        <style>
+
+          body {
+            font-family: Arial, sans-serif;
+            background: #08090d;
+            color: white;
+            text-align: center;
+            padding: 70px 20px;
+          }
+
+          .box {
+            max-width: 550px;
+            margin: auto;
+            padding: 35px;
+            background: #11131a;
+            border: 1px solid #2a2d38;
+            border-radius: 18px;
+          }
+
+          h1 {
+            color: #a78bfa;
+          }
+
+          p {
+            color: #aaa;
+            line-height: 1.6;
+          }
+
+          .username {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+          }
+
+        </style>
+
+      </head>
+
+      <body>
+
+        <div class="box">
+
+          <h1>Instagram Connected ✓</h1>
+
+          <p>Your Instagram account was successfully connected.</p>
+
+          <div class="username">
+            @${escapeHtml(profileData.username || "Instagram User")}
+          </div>
+
+          <p>
+            We successfully received your Instagram profile data.
+          </p>
+
+          <p>
+            Your full SEO audit can now be generated.
+          </p>
+
+        </div>
+
+      </body>
+
+      </html>
+    `);
+
+  } catch (error) {
+
+    console.error("Instagram OAuth error:", error);
+
+    res.status(500).send(`
+      <h2>Instagram Connection Error</h2>
+      <p>Something went wrong while connecting Instagram.</p>
+    `);
+  }
 });
 
 
 // -------------------------
-// Preliminary Audit API
+// Basic Audit API
 // -------------------------
 
 app.post("/api/audit", (req, res) => {
@@ -116,58 +244,37 @@ app.post("/api/audit", (req, res) => {
     });
   }
 
-  let score = 58;
-
-  for (let i = 0; i < username.length; i++) {
-    score += username.charCodeAt(i) % 3;
-  }
-
-  if (username.length >= 4 && username.length <= 20) {
-    score += 7;
-  }
-
-  if (!username.includes("_") && !username.includes(".")) {
-    score += 4;
-  }
-
-  score = Math.min(score, 89);
-
   res.json({
     success: true,
-
     username: username,
-
-    score: score,
-
-    categories: {
-      profileSEO: Math.min(score + 5, 100),
-      keywordSEO: Math.max(score - 4, 35),
-      contentSEO: Math.max(score - 8, 35),
-      localSEO: Math.max(score - 13, 30)
-    },
-
-    strengths: [
-      "Username is available for analysis.",
-      "Profile has an optimization starting point.",
-      "Username structure can be used in a broader SEO strategy."
-    ],
-
-    opportunities: [
-      "Review primary profile keywords.",
-      "Optimize keyword placement in the bio.",
-      "Create content around specific search intent.",
-      "Add local keywords when relevant.",
-      "Review hashtag and metadata strategy."
-    ],
-
-    notice:
-      "This is a preliminary audit. Official Instagram data will be connected after API authorization."
+    notice: "Preliminary audit."
   });
 });
 
 
+// -------------------------
+// HTML escaping
+// -------------------------
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+// -------------------------
+// Start server
+// -------------------------
+
 app.listen(PORT, () => {
+
   console.log(
     `DDM Instagram SEO API running on port ${PORT}`
   );
+
 });
