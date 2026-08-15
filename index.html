@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Instagram SEO | Divyom Digital Media</title>
+
+  <meta
+    name="description"
+    content="Instagram SEO audits and optimization by Divyom Digital Media. Improve your Instagram profile, keywords, content and discoverability."
+  >
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #08090d;
+      color: #ffffff;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(1120px, 92%);
+      margin: auto;
+    }
+
+    /* NAVBAR */
+
+    nav {
+      padding: 22px 0;
+      border-bottom: 1px solid #20232d;
+      position: sticky;
+      top: 0;
+      background: rgba(8, 9, 13, 0.94);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: #a78bfa;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+      font-size: 14px;
+      color: #c7c9d1;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+    .nav-button {
+      background: #ffffff;
+      color: #090a0f;
+      padding: 11px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    /* HERO */
+
+    .hero {
+      padding: 100px 0 80px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #343746;
+      background: #11131a;
+      color: #c9b8ff;
+      padding: 7px 13px;
+      border-radius: 50px;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
+
+    .hero h1 {
+      max-width: 850px;
+      margin: auto;
+      font-size: clamp(42px, 7vw, 76px);
+      line-height: 1.05;
+      letter-spacing: -3px;
+    }
+
+    .hero h1 span {
+      color: #a78bfa;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 25px auto 0;
+      color: #a7aab5;
+      font-size: 18px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 35px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 22px;
+      border-radius: 9px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: #ffffff;
+      color: #08090d;
+    }
+
+    .btn-secondary {
+      border: 1px solid #353846;
+      color: white;
+    }
+
+    /* SECTIONS */
+
+    section {
+      padding: 85px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      max-width: 700px;
+      margin: auto auto 45px;
+    }
+
+    .section-title h2 {
+      font-size: 42px;
+      letter-spacing: -1.5px;
+      margin-bottom: 13px;
+    }
+
+    .section-title p {
+      color: #9699a6;
+    }
+
+    /* SCORE */
+
+    .score-box {
+      max-width: 650px;
+      margin: auto;
+      background: #11131a;
+      border: 1px solid #292c37;
+      border-radius: 18px;
+      padding: 35px;
+      text-align: center;
+    }
+
+    .score-input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #363945;
+      background: #090a0e;
+      color: white;
+      font-size: 16px;
+      margin-bottom: 15px;
+      outline: none;
+    }
+
+    .score-input:focus {
+      border-color: #a78bfa;
+    }
+
+    .score-result {
+      display: none;
+      margin-top: 25px;
+      padding: 25px;
+      border-radius: 12px;
+      background: #0b0d12;
+    }
+
+    .score-number {
+      font-size: 55px;
+      font-weight: 800;
+      color: #a78bfa;
+    }
+
+    .small-note {
+      color: #858895;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    /* CARDS */
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: #11131a;
+      border: 1px solid #292c37;
+      padding: 28px;
+      border-radius: 15px;
+    }
+
+    .card-number {
+      color: #a78bfa;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      font-size: 21px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #9699a6;
+      font-size: 15px;
+    }
+
+    /* PRICING */
+
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .price-card {
+      background: #11131a;
+      border: 1px solid #292c37;
+      border-radius: 16px;
+      padding: 30px;
+    }
+
+    .price-card.featured {
+      border-color: #a78bfa;
+      transform: translateY(-8px);
+    }
+
+    .popular {
+      color: #c9b8ff;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .price-card h3 {
+      font-size: 24px;
+    }
+
+    .price {
+      font-size: 38px;
+      font-weight: 800;
+      margin: 15px 0;
+    }
+
+    .price span {
+      font-size: 14px;
+      color: #888b98;
+      font-weight: normal;
+    }
+
+    .features {
+      list-style: none;
+      margin: 25px 0;
+    }
+
+    .features li {
+      color: #a8abb7;
+      padding: 7px 0;
+      font-size: 14px;
+    }
+
+    .features li::before {
+      content: "✓ ";
+      color: #a78bfa;
+      font-weight: bold;
+    }
+
+    .full-btn {
+      width: 100%;
+      text-align: center;
+      background: white;
+      color: #08090d;
+      padding: 13px;
+      border-radius: 8px;
+      font-weight: 700;
+      display: block;
+    }
+
+    /* PROCESS */
+
+    .process {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .process-item {
+      text-align: center;
+      padding: 25px;
+    }
+
+    .process-item .num {
+      width: 42px;
+      height: 42px;
+      border: 1px solid #3a3d4b;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      color: #c9b8ff;
+    }
+
+    .process-item p {
+      color: #9699a6;
+      font-size: 14px;
+      margin-top: 7px;
+    }
+
+    /* CTA */
+
+    .cta {
+      text-align: center;
+      background: #11131a;
+      border: 1px solid #292c37;
+      border-radius: 20px;
+      padding: 65px 25px;
+    }
+
+    .cta h2 {
+      font-size: 42px;
+      margin-bottom: 15px;
+    }
+
+    .cta p {
+      color: #9699a6;
+      max-width: 600px;
+      margin: auto auto 25px;
+    }
+
+    /* FOOTER */
+
+    footer {
+      padding: 35px 0;
+      border-top: 1px solid #20232d;
+      color: #777b88;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 800px) {
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 75px 0 60px;
+      }
+
+      .hero h1 {
+        letter-spacing: -2px;
+      }
+
+      .grid,
+      .pricing {
+        grid-template-columns: 1fr;
+      }
+
+      .process {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .price-card.featured {
+        transform: none;
+      }
+
+      .section-title h2,
+      .cta h2 {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 500px) {
+
+      .process {
+        grid-template-columns: 1fr;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+
+  <nav>
+    <div class="container nav-inner">
+
+      <div class="logo">
+        DIVYOM<span>™</span>
+      </div>
+
+      <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#pricing">Plans</a>
+        <a href="#process">How It Works</a>
+        <a href="#contact" class="nav-button">Get Started</a>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <!-- HERO -->
+
+  <header class="hero">
+    <div class="container">
+
+      <div class="badge">
+        Instagram Search & Discovery Optimization
+      </div>
+
+      <h1>
+        Make Your Instagram
+        <span>Easier to Find.</span>
+      </h1>
+
+      <p>
+        Optimize your Instagram profile, keywords and content
+        for better search relevance, discoverability and local visibility.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#score" class="btn btn-primary">
+          Check My Instagram SEO
+        </a>
+
+        <a href="#pricing" class="btn btn-secondary">
+          View Plans
+        </a>
+      </div>
+
+      <p class="small-note">
+        No Instagram password required.
+      </p>
+
+    </div>
+  </header>
+
+
+  <!-- SCORE -->
+
+  <section id="score">
+
+    <div class="container">
+
+      <div class="section-title">
+
+        <h2>
+          How Search-Ready Is Your Instagram?
+        </h2>
+
+        <p>
+          Start with a quick preliminary Instagram SEO score.
+        </p>
+
+      </div>
+
+
+      <div class="score-box">
+
+        <input
+          id="username"
+          class="score-input"
+          type="text"
+          placeholder="@yourinstagram"
+        >
+
+        <button
+          onclick="checkScore()"
+          class="btn btn-primary"
+          style="border:0; cursor:pointer;"
+        >
+          Check My Score
+        </button>
+
+
+        <div id="scoreResult" class="score-result">
+
+          <div class="score-number">
+            72/100
+          </div>
+
+          <h3>
+            Good — Needs Improvement
+          </h3>
+
+          <p class="small-note">
+            This is a preliminary score. Get the full audit
+            to identify your optimization opportunities.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- SERVICES -->
+
+  <section id="services">
+
+    <div class="container">
+
+      <div class="section-title">
+
+        <h2>
+          Instagram SEO Services
+        </h2>
+
+        <p>
+          A structured approach to improve your Instagram's
+          search relevance and discoverability.
+        </p>
+
+      </div>
+
+
+      <div class="grid">
+
+        <div class="card">
+          <div class="card-number">01</div>
+          <h3>Profile SEO</h3>
+          <p>
+            Optimize your name, bio, category, positioning,
+            CTA and business information.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <div class="card-number">02</div>
+          <h3>Keyword Research</h3>
+          <p>
+            Identify primary, secondary, local and
+            long-tail keywords relevant to your business.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <div class="card-number">03</div>
+          <h3>Content SEO</h3>
+          <p>
+            Build content topics and structures around
+            relevant search intent and niche themes.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <div class="card-number">04</div>
+          <h3>Local SEO</h3>
+          <p>
+            Improve local relevance for businesses targeting
+            specific cities and areas.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <div class="card-number">05</div>
+          <h3>Hashtag Strategy</h3>
+          <p>
+            Create relevant hashtag groups based on niche,
+            service, product and location.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <div class="card-number">06</div>
+          <h3>Competitor Analysis</h3>
+          <p>
+            Identify competitor positioning, content gaps
+            and optimization opportunities.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- PROCESS -->
+
+  <section id="process">
+
+    <div class="container">
+
+      <div class="section-title">
+
+        <h2>
+          From Audit to Optimization
+        </h2>
+
+        <p>
+          A simple process designed for businesses and creators.
+        </p>
+
+      </div>
+
+
+      <div class="process">
+
+        <div class="process-item">
+          <div class="num">01</div>
+          <h3>Audit</h3>
+          <p>
+            Analyze your current Instagram SEO.
+          </p>
+        </div>
+
+        <div class="process-item">
+          <div class="num">02</div>
+          <h3>Research</h3>
+          <p>
+            Research keywords and competitors.
+          </p>
+        </div>
+
+        <div class="process-item">
+          <div class="num">03</div>
+          <h3>Optimize</h3>
+          <p>
+            Improve your profile and SEO structure.
+          </p>
+        </div>
+
+        <div class="process-item">
+          <div class="num">04</div>
+          <h3>Monitor</h3>
+          <p>
+            Track opportunities and improvements.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- PRICING -->
+
+  <section id="pricing">
+
+    <div class="container">
+
+      <div class="section-title">
+
+        <h2>
+          Instagram SEO Plans
+        </h2>
+
+        <p>
+          Start with an audit or choose ongoing optimization.
+        </p>
+
+      </div>
+
+
+      <div class="pricing">
+
+
+        <!-- AUDIT -->
+
+        <div class="price-card">
+
+          <h3>SEO Audit</h3>
+
+          <div class="price">
+            ₹999
+            <span>one time</span>
+          </div>
+
+          <ul class="features">
+            <li>Instagram SEO Score</li>
+            <li>Profile Audit</li>
+            <li>Keyword Audit</li>
+            <li>Content Audit</li>
+            <li>Local SEO Audit</li>
+            <li>PDF Report</li>
+          </ul>
+
+          <a href="#contact" class="full-btn">
+            Get My Audit
+          </a>
+
+        </div>
+
+
+        <!-- SETUP -->
+
+        <div class="price-card featured">
+
+          <div class="popular">
+            Most Popular
+          </div>
+
+          <h3>SEO Setup</h3>
+
+          <div class="price">
+            ₹3,999
+            <span>one time</span>
+          </div>
+
+          <ul class="features">
+            <li>Everything in Audit</li>
+            <li>Profile Optimization</li>
+            <li>Keyword Research</li>
+            <li>Content Pillars</li>
+            <li>Competitor Analysis</li>
+            <li>30-Day Roadmap</li>
+          </ul>
+
+          <a href="#contact" class="full-btn">
+            Optimize My Instagram
+          </a>
+
+        </div>
+
+
+        <!-- GROWTH -->
+
+        <div class="price-card">
+
+          <h3>SEO Growth</h3>
+
+          <div class="price">
+            ₹5,999
+            <span>/month</span>
+          </div>
+
+          <ul class="features">
+            <li>Profile Monitoring</li>
+            <li>Keyword Updates</li>
+            <li>Content SEO</li>
+            <li>Local SEO</li>
+            <li>Competitor Monitoring</li>
+            <li>Monthly Report</li>
+          </ul>
+
+          <a href="#contact" class="full-btn">
+            Start Growth
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- CTA -->
+
+  <section id="contact">
+
+    <div class="container">
+
+      <div class="cta">
+
+        <h2>
+          Ready to Optimize Your Instagram?
+        </h2>
+
+        <p>
+          Start with an Instagram SEO audit and discover
+          where your profile can improve.
+        </p>
+
+        <a href="mailto:hello@divyom.com" class="btn btn-primary">
+          Contact Us
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="container">
+
+      © 2026 Divyom Digital Media.
+      Instagram SEO is an independent optimization service.
+
+    </div>
+
+  </footer>
+
+
+  <!-- JAVASCRIPT -->
+
+  <script>
+
+    function checkScore() {
+
+      const username =
+        document.getElementById("username").value.trim();
+
+      const result =
+        document.getElementById("scoreResult");
+
+      if (username === "") {
+
+        alert("Please enter your Instagram username.");
+
+        return;
+      }
+
+      result.style.display = "block";
+
+    }
+
+  </script>
+
+</body>
+</html>
