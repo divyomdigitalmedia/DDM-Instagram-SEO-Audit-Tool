@@ -8,6 +8,10 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
+// -------------------------
+// Basic routes
+// -------------------------
+
 app.get("/", (req, res) => {
   res.json({
     success: true,
@@ -22,6 +26,83 @@ app.get("/health", (req, res) => {
   });
 });
 
+
+// -------------------------
+// Instagram OAuth callback
+// -------------------------
+
+app.get("/auth/instagram/callback", (req, res) => {
+
+  const code = req.query.code;
+
+  if (!code) {
+    return res.status(400).send(`
+      <h2>Instagram Login Error</h2>
+      <p>No authorization code was received.</p>
+    `);
+  }
+
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Instagram Connected</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: #08090d;
+          color: white;
+          text-align: center;
+          padding: 80px 20px;
+        }
+
+        .box {
+          max-width: 500px;
+          margin: auto;
+          padding: 35px;
+          background: #11131a;
+          border: 1px solid #2a2d38;
+          border-radius: 18px;
+        }
+
+        h1 {
+          color: #a78bfa;
+        }
+
+        p {
+          color: #aaa;
+          line-height: 1.6;
+        }
+      </style>
+    </head>
+
+    <body>
+
+      <div class="box">
+
+        <h1>Instagram Connected ✓</h1>
+
+        <p>
+          Your Instagram authorization was received successfully.
+        </p>
+
+        <p>
+          The secure token exchange will be connected in the next step.
+        </p>
+
+      </div>
+
+    </body>
+    </html>
+  `);
+});
+
+
+// -------------------------
+// Preliminary Audit API
+// -------------------------
+
 app.post("/api/audit", (req, res) => {
 
   const username = String(req.body.username || "")
@@ -35,31 +116,27 @@ app.post("/api/audit", (req, res) => {
     });
   }
 
-  /*
-   * FREE MVP
-   *
-   * This endpoint currently does not pretend
-   * to fetch Instagram data that we do not have
-   * permission to access.
-   *
-   * Later we will connect the official
-   * Instagram API here.
-   */
-
   let score = 58;
 
   for (let i = 0; i < username.length; i++) {
     score += username.charCodeAt(i) % 3;
   }
 
-  score += username.length >= 4 && username.length <= 20 ? 7 : 0;
-  score += !username.includes("_") && !username.includes(".") ? 4 : 0;
+  if (username.length >= 4 && username.length <= 20) {
+    score += 7;
+  }
+
+  if (!username.includes("_") && !username.includes(".")) {
+    score += 4;
+  }
 
   score = Math.min(score, 89);
 
   res.json({
     success: true,
+
     username: username,
+
     score: score,
 
     categories: {
@@ -88,6 +165,9 @@ app.post("/api/audit", (req, res) => {
   });
 });
 
+
 app.listen(PORT, () => {
-  console.log(`DDM Instagram SEO API running on port ${PORT}`);
+  console.log(
+    `DDM Instagram SEO API running on port ${PORT}`
+  );
 });
