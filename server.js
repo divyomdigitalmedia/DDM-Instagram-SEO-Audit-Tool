@@ -113,21 +113,20 @@ app.get("/auth/instagram/callback", async (req, res) => {
     // --------------------------------
 
     const profileResponse = await fetch(
-      `https://graph.instagram.com/v23.0/${userId}?fields=id,username,name,profile_picture_url,biography,followers_count,follows_count,media_count&access_token=${encodeURIComponent(accessToken)}`
-    );
-
+  `https://graph.instagram.com/me?fields=id,username&access_token=${encodeURIComponent(accessToken)}`
+);
     const profileData = await profileResponse.json();
 
     if (!profileResponse.ok) {
 
-      console.error("Instagram profile error:", profileData);
+  console.error("Instagram profile error:", profileData);
 
-      return res.status(400).send(`
-        <h2>Instagram Profile Error</h2>
-        <p>Authorization succeeded, but profile data could not be loaded.</p>
-      `);
-    }
-
+  return res.status(400).send(`
+    <h2>Instagram Profile Error</h2>
+    <p>Instagram authorization succeeded, but the profile API returned an error.</p>
+    <p>Please check the Meta API permissions and account type.</p>
+  `);
+}
 
     // --------------------------------
     // IMPORTANT:
