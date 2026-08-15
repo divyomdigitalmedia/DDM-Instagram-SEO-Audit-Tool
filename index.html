@@ -1,885 +1,1658 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Instagram SEO | Divyom Digital Media</title>
-
-  <meta
-    name="description"
-    content="Instagram SEO audits and optimization by Divyom Digital Media. Improve your Instagram profile, keywords, content and discoverability."
-  >
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #08090d;
-      color: #ffffff;
-      line-height: 1.6;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .container {
-      width: min(1120px, 92%);
-      margin: auto;
-    }
-
-    /* NAVBAR */
-
-    nav {
-      padding: 22px 0;
-      border-bottom: 1px solid #20232d;
-      position: sticky;
-      top: 0;
-      background: rgba(8, 9, 13, 0.94);
-      backdrop-filter: blur(10px);
-      z-index: 100;
-    }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-
-    .logo span {
-      color: #a78bfa;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 25px;
-      align-items: center;
-      font-size: 14px;
-      color: #c7c9d1;
-    }
-
-    .nav-links a:hover {
-      color: white;
-    }
-
-    .nav-button {
-      background: #ffffff;
-      color: #090a0f;
-      padding: 11px 18px;
-      border-radius: 8px;
-      font-weight: 700;
-    }
-
-    /* HERO */
-
-    .hero {
-      padding: 100px 0 80px;
-      text-align: center;
-    }
-
-    .badge {
-      display: inline-block;
-      border: 1px solid #343746;
-      background: #11131a;
-      color: #c9b8ff;
-      padding: 7px 13px;
-      border-radius: 50px;
-      font-size: 13px;
-      margin-bottom: 25px;
-    }
-
-    .hero h1 {
-      max-width: 850px;
-      margin: auto;
-      font-size: clamp(42px, 7vw, 76px);
-      line-height: 1.05;
-      letter-spacing: -3px;
-    }
-
-    .hero h1 span {
-      color: #a78bfa;
-    }
-
-    .hero p {
-      max-width: 680px;
-      margin: 25px auto 0;
-      color: #a7aab5;
-      font-size: 18px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      margin-top: 35px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      padding: 14px 22px;
-      border-radius: 9px;
-      font-weight: 700;
-      display: inline-block;
-    }
-
-    .btn-primary {
-      background: #ffffff;
-      color: #08090d;
-    }
-
-    .btn-secondary {
-      border: 1px solid #353846;
-      color: white;
-    }
-
-    /* SECTIONS */
-
-    section {
-      padding: 85px 0;
-    }
-
-    .section-title {
-      text-align: center;
-      max-width: 700px;
-      margin: auto auto 45px;
-    }
-
-    .section-title h2 {
-      font-size: 42px;
-      letter-spacing: -1.5px;
-      margin-bottom: 13px;
-    }
-
-    .section-title p {
-      color: #9699a6;
-    }
-
-    /* SCORE */
-
-    .score-box {
-      max-width: 650px;
-      margin: auto;
-      background: #11131a;
-      border: 1px solid #292c37;
-      border-radius: 18px;
-      padding: 35px;
-      text-align: center;
-    }
-
-    .score-input {
-      width: 100%;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #363945;
-      background: #090a0e;
-      color: white;
-      font-size: 16px;
-      margin-bottom: 15px;
-      outline: none;
-    }
-
-    .score-input:focus {
-      border-color: #a78bfa;
-    }
-
-    .score-result {
-      display: none;
-      margin-top: 25px;
-      padding: 25px;
-      border-radius: 12px;
-      background: #0b0d12;
-    }
-
-    .score-number {
-      font-size: 55px;
-      font-weight: 800;
-      color: #a78bfa;
-    }
-
-    .small-note {
-      color: #858895;
-      font-size: 13px;
-      margin-top: 10px;
-    }
-
-    /* CARDS */
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .card {
-      background: #11131a;
-      border: 1px solid #292c37;
-      padding: 28px;
-      border-radius: 15px;
-    }
-
-    .card-number {
-      color: #a78bfa;
-      font-size: 14px;
-      font-weight: 800;
-      margin-bottom: 15px;
-    }
-
-    .card h3 {
-      font-size: 21px;
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      color: #9699a6;
-      font-size: 15px;
-    }
-
-    /* PRICING */
-
-    .pricing {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .price-card {
-      background: #11131a;
-      border: 1px solid #292c37;
-      border-radius: 16px;
-      padding: 30px;
-    }
-
-    .price-card.featured {
-      border-color: #a78bfa;
-      transform: translateY(-8px);
-    }
-
-    .popular {
-      color: #c9b8ff;
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .price-card h3 {
-      font-size: 24px;
-    }
-
-    .price {
-      font-size: 38px;
-      font-weight: 800;
-      margin: 15px 0;
-    }
-
-    .price span {
-      font-size: 14px;
-      color: #888b98;
-      font-weight: normal;
-    }
-
-    .features {
-      list-style: none;
-      margin: 25px 0;
-    }
-
-    .features li {
-      color: #a8abb7;
-      padding: 7px 0;
-      font-size: 14px;
-    }
-
-    .features li::before {
-      content: "✓ ";
-      color: #a78bfa;
-      font-weight: bold;
-    }
-
-    .full-btn {
-      width: 100%;
-      text-align: center;
-      background: white;
-      color: #08090d;
-      padding: 13px;
-      border-radius: 8px;
-      font-weight: 700;
-      display: block;
-    }
-
-    /* PROCESS */
-
-    .process {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .process-item {
-      text-align: center;
-      padding: 25px;
-    }
-
-    .process-item .num {
-      width: 42px;
-      height: 42px;
-      border: 1px solid #3a3d4b;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 18px;
-      color: #c9b8ff;
-    }
-
-    .process-item p {
-      color: #9699a6;
-      font-size: 14px;
-      margin-top: 7px;
-    }
-
-    /* CTA */
-
-    .cta {
-      text-align: center;
-      background: #11131a;
-      border: 1px solid #292c37;
-      border-radius: 20px;
-      padding: 65px 25px;
-    }
-
-    .cta h2 {
-      font-size: 42px;
-      margin-bottom: 15px;
-    }
-
-    .cta p {
-      color: #9699a6;
-      max-width: 600px;
-      margin: auto auto 25px;
-    }
-
-    /* FOOTER */
-
-    footer {
-      padding: 35px 0;
-      border-top: 1px solid #20232d;
-      color: #777b88;
-      font-size: 13px;
-      text-align: center;
-    }
-
-    /* MOBILE */
-
-    @media (max-width: 800px) {
-
-      .nav-links {
-        display: none;
-      }
-
-      .hero {
-        padding: 75px 0 60px;
-      }
-
-      .hero h1 {
-        letter-spacing: -2px;
-      }
-
-      .grid,
-      .pricing {
-        grid-template-columns: 1fr;
-      }
-
-      .process {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .price-card.featured {
-        transform: none;
-      }
-
-      .section-title h2,
-      .cta h2 {
-        font-size: 32px;
-      }
-    }
-
-    @media (max-width: 500px) {
-
-      .process {
-        grid-template-columns: 1fr;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Instagram SEO Audit Tool | Divyom Digital Media</title>
+
+<meta name="description"
+content="Get a preliminary Instagram SEO score and discover profile, keyword, content and local SEO opportunities.">
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#08090d;
+  color:#fff;
+  line-height:1.6;
+}
+
+.container{
+  width:min(1100px,92%);
+  margin:auto;
+}
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(8,9,13,.95);
+  border-bottom:1px solid #242630;
+  backdrop-filter:blur(12px);
+}
+
+.nav-inner{
+  height:72px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:21px;
+  font-weight:800;
+}
+
+.logo span{
+  color:#a78bfa;
+}
+
+.nav-links{
+  display:flex;
+  gap:25px;
+  color:#b8bac5;
+  font-size:14px;
+}
+
+.nav-links a{
+  text-decoration:none;
+  color:inherit;
+}
+
+.hero{
+  padding:90px 0 70px;
+  text-align:center;
+}
+
+.badge{
+  display:inline-block;
+  border:1px solid #383b49;
+  background:#11131a;
+  color:#c8b9ff;
+  border-radius:50px;
+  padding:7px 14px;
+  font-size:13px;
+  margin-bottom:22px;
+}
+
+.hero h1{
+  max-width:850px;
+  margin:auto;
+  font-size:clamp(40px,7vw,72px);
+  line-height:1.05;
+  letter-spacing:-3px;
+}
+
+.hero h1 span{
+  color:#a78bfa;
+}
+
+.hero p{
+  max-width:680px;
+  margin:24px auto;
+  color:#999ca9;
+  font-size:17px;
+}
+
+.btn{
+  border:0;
+  border-radius:9px;
+  padding:14px 22px;
+  font-weight:700;
+  cursor:pointer;
+  font-size:15px;
+}
+
+.btn-primary{
+  background:#fff;
+  color:#08090d;
+}
+
+.btn-secondary{
+  background:#151720;
+  color:#fff;
+  border:1px solid #363946;
+}
+
+.section{
+  padding:70px 0;
+}
+
+.section-title{
+  text-align:center;
+  max-width:700px;
+  margin:0 auto 40px;
+}
+
+.section-title h2{
+  font-size:40px;
+  letter-spacing:-1.5px;
+  margin-bottom:10px;
+}
+
+.section-title p{
+  color:#999ca9;
+}
+
+.audit-box{
+  max-width:760px;
+  margin:auto;
+  background:#11131a;
+  border:1px solid #292c38;
+  border-radius:18px;
+  padding:35px;
+}
+
+.form-group{
+  margin-bottom:22px;
+}
+
+label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:700;
+  font-size:14px;
+}
+
+input,
+select{
+  width:100%;
+  padding:14px;
+  border-radius:8px;
+  border:1px solid #373a48;
+  background:#090a0e;
+  color:#fff;
+  outline:none;
+  font-size:15px;
+}
+
+input:focus,
+select:focus{
+  border-color:#a78bfa;
+}
+
+.question{
+  border-top:1px solid #282b35;
+  padding:22px 0;
+}
+
+.question:first-child{
+  border-top:0;
+}
+
+.question-title{
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+.options{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.option{
+  border:1px solid #373a48;
+  background:#0c0e13;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+  color:#b9bbc5;
+  text-align:center;
+  font-size:13px;
+}
+
+.option input{
+  display:none;
+}
+
+.option.selected{
+  border-color:#a78bfa;
+  color:#fff;
+  background:#191625;
+}
+
+.submit-area{
+  text-align:center;
+  margin-top:30px;
+}
+
+.result{
+  display:none;
+  margin-top:40px;
+}
+
+.result-card{
+  background:#11131a;
+  border:1px solid #292c38;
+  border-radius:18px;
+  padding:35px;
+}
+
+.score-wrap{
+  text-align:center;
+  padding-bottom:30px;
+  border-bottom:1px solid #292c38;
+}
+
+.score{
+  font-size:72px;
+  font-weight:800;
+  color:#a78bfa;
+  line-height:1;
+}
+
+.status{
+  margin-top:12px;
+  font-size:20px;
+  font-weight:700;
+}
+
+.result-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  margin-top:30px;
+}
+
+.result-section{
+  background:#0c0e13;
+  border:1px solid #272a34;
+  padding:22px;
+  border-radius:12px;
+}
+
+.result-section h3{
+  margin-bottom:15px;
+}
+
+.result-section ul{
+  list-style:none;
+}
+
+.result-section li{
+  color:#aeb0bb;
+  padding:7px 0;
+  font-size:14px;
+}
+
+.strength li::before{
+  content:"✓ ";
+  color:#7ee2a8;
+}
+
+.issue li::before{
+  content:"⚠ ";
+  color:#ffbf69;
+}
+
+.category-score{
+  margin-top:30px;
+}
+
+.category-row{
+  margin:14px 0;
+}
+
+.category-head{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:6px;
+  font-size:14px;
+}
+
+.bar{
+  height:8px;
+  background:#252833;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.bar-fill{
+  height:100%;
+  background:#a78bfa;
+  border-radius:10px;
+}
+
+.cta{
+  margin-top:30px;
+  padding:28px;
+  border:1px solid #393044;
+  background:#15121e;
+  border-radius:14px;
+  text-align:center;
+}
+
+.cta h3{
+  font-size:24px;
+  margin-bottom:8px;
+}
+
+.cta p{
+  color:#9b9eaa;
+  margin-bottom:18px;
+}
+
+.small{
+  color:#777b87;
+  font-size:12px;
+  margin-top:12px;
+}
+
+.services{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.service{
+  padding:25px;
+  background:#11131a;
+  border:1px solid #292c38;
+  border-radius:14px;
+}
+
+.service-number{
+  color:#a78bfa;
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+
+.service h3{
+  margin-bottom:8px;
+}
+
+.service p{
+  color:#999ca9;
+  font-size:14px;
+}
+
+.pricing{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.price-card{
+  padding:28px;
+  border:1px solid #292c38;
+  background:#11131a;
+  border-radius:15px;
+}
+
+.price-card.featured{
+  border-color:#a78bfa;
+}
+
+.price-card h3{
+  font-size:22px;
+}
+
+.price{
+  font-size:38px;
+  font-weight:800;
+  margin:15px 0;
+}
+
+.price span{
+  color:#858894;
+  font-size:13px;
+  font-weight:normal;
+}
+
+.features{
+  list-style:none;
+  margin:20px 0;
+}
+
+.features li{
+  color:#a5a8b3;
+  font-size:14px;
+  padding:6px 0;
+}
+
+.features li::before{
+  content:"✓ ";
+  color:#a78bfa;
+}
+
+.full-btn{
+  display:block;
+  text-align:center;
+  background:#fff;
+  color:#08090d;
+  padding:12px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:700;
+}
+
+footer{
+  padding:35px 0;
+  border-top:1px solid #242630;
+  text-align:center;
+  color:#747783;
+  font-size:13px;
+}
+
+@media(max-width:800px){
+
+  .nav-links{
+    display:none;
+  }
+
+  .result-grid,
+  .services,
+  .pricing{
+    grid-template-columns:1fr;
+  }
+
+  .options{
+    grid-template-columns:1fr;
+  }
+
+  .hero{
+    padding:65px 0;
+  }
+
+  .hero h1{
+    letter-spacing:-2px;
+  }
+
+  .section-title h2{
+    font-size:32px;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
-  <!-- NAVIGATION -->
+<nav>
+<div class="container nav-inner">
 
-  <nav>
-    <div class="container nav-inner">
+<div class="logo">
+DIVYOM<span>™</span>
+</div>
 
-      <div class="logo">
-        DIVYOM<span>™</span>
-      </div>
+<div class="nav-links">
+<a href="#audit">Audit</a>
+<a href="#services">Services</a>
+<a href="#pricing">Plans</a>
+</div>
 
-      <div class="nav-links">
-        <a href="#services">Services</a>
-        <a href="#pricing">Plans</a>
-        <a href="#process">How It Works</a>
-        <a href="#contact" class="nav-button">Get Started</a>
-      </div>
+</div>
+</nav>
 
-    </div>
-  </nav>
 
+<header class="hero">
 
-  <!-- HERO -->
+<div class="container">
 
-  <header class="hero">
-    <div class="container">
+<div class="badge">
+DDM Instagram SEO Score™
+</div>
 
-      <div class="badge">
-        Instagram Search & Discovery Optimization
-      </div>
+<h1>
+Find Out How
+<span>Search-Ready</span>
+Your Instagram Is.
+</h1>
 
-      <h1>
-        Make Your Instagram
-        <span>Easier to Find.</span>
-      </h1>
+<p>
+Analyze your Instagram profile, keywords, content and local SEO
+with our preliminary Instagram SEO audit.
+</p>
 
-      <p>
-        Optimize your Instagram profile, keywords and content
-        for better search relevance, discoverability and local visibility.
-      </p>
+<a href="#audit" class="btn btn-primary">
+Start Free Audit
+</a>
 
-      <div class="hero-buttons">
-        <a href="#score" class="btn btn-primary">
-          Check My Instagram SEO
-        </a>
+<p class="small">
+No Instagram password required.
+</p>
 
-        <a href="#pricing" class="btn btn-secondary">
-          View Plans
-        </a>
-      </div>
+</div>
 
-      <p class="small-note">
-        No Instagram password required.
-      </p>
+</header>
 
-    </div>
-  </header>
 
+<section class="section" id="audit">
 
-  <!-- SCORE -->
+<div class="container">
 
-  <section id="score">
+<div class="section-title">
 
-    <div class="container">
+<h2>
+Instagram SEO Audit
+</h2>
 
-      <div class="section-title">
+<p>
+Answer a few questions about your Instagram account.
+We'll calculate a preliminary optimization score.
+</p>
 
-        <h2>
-          How Search-Ready Is Your Instagram?
-        </h2>
+</div>
 
-        <p>
-          Start with a quick preliminary Instagram SEO score.
-        </p>
 
-      </div>
+<div class="audit-box">
 
+<div class="form-group">
 
-      <div class="score-box">
+<label>
+Instagram Username
+</label>
 
-        <input
-          id="username"
-          class="score-input"
-          type="text"
-          placeholder="@yourinstagram"
-        >
+<input
+id="username"
+placeholder="@yourusername"
+>
 
-        <button
-          onclick="checkScore()"
-          class="btn btn-primary"
-          style="border:0; cursor:pointer;"
-        >
-          Check My Score
-        </button>
+</div>
 
 
-        <div id="scoreResult" class="score-result">
+<div class="form-group">
 
-          <div class="score-number">
-            72/100
-          </div>
+<label>
+Business Name
+</label>
 
-          <h3>
-            Good — Needs Improvement
-          </h3>
+<input
+id="business"
+placeholder="Your Business Name"
+>
 
-          <p class="small-note">
-            This is a preliminary score. Get the full audit
-            to identify your optimization opportunities.
-          </p>
+</div>
 
-        </div>
 
-      </div>
+<div class="form-group">
 
-    </div>
+<label>
+Business Type
+</label>
 
-  </section>
+<select id="businessType">
 
+<option value="">
+Select business type
+</option>
 
-  <!-- SERVICES -->
+<option>Local Business</option>
+<option>Online Business</option>
+<option>Personal Brand</option>
+<option>Creator</option>
+<option>Agency</option>
+<option>E-commerce</option>
 
-  <section id="services">
+</select>
 
-    <div class="container">
+</div>
 
-      <div class="section-title">
 
-        <h2>
-          Instagram SEO Services
-        </h2>
+<div class="form-group">
 
-        <p>
-          A structured approach to improve your Instagram's
-          search relevance and discoverability.
-        </p>
+<label>
+Primary Location
+</label>
 
-      </div>
+<input
+id="location"
+placeholder="Example: Jamnagar, Gujarat"
+>
 
+</div>
 
-      <div class="grid">
 
-        <div class="card">
-          <div class="card-number">01</div>
-          <h3>Profile SEO</h3>
-          <p>
-            Optimize your name, bio, category, positioning,
-            CTA and business information.
-          </p>
-        </div>
+<div class="question">
 
+<div class="question-title">
+1. Is your Instagram Name field optimized with a relevant keyword?
+</div>
 
-        <div class="card">
-          <div class="card-number">02</div>
-          <h3>Keyword Research</h3>
-          <p>
-            Identify primary, secondary, local and
-            long-tail keywords relevant to your business.
-          </p>
-        </div>
+<div class="options">
 
+<label class="option">
+<input type="radio" name="q1" value="0">
+No
+</label>
 
-        <div class="card">
-          <div class="card-number">03</div>
-          <h3>Content SEO</h3>
-          <p>
-            Build content topics and structures around
-            relevant search intent and niche themes.
-          </p>
-        </div>
+<label class="option">
+<input type="radio" name="q1" value="1">
+Partially
+</label>
 
+<label class="option">
+<input type="radio" name="q1" value="2">
+Yes
+</label>
 
-        <div class="card">
-          <div class="card-number">04</div>
-          <h3>Local SEO</h3>
-          <p>
-            Improve local relevance for businesses targeting
-            specific cities and areas.
-          </p>
-        </div>
+</div>
 
+</div>
 
-        <div class="card">
-          <div class="card-number">05</div>
-          <h3>Hashtag Strategy</h3>
-          <p>
-            Create relevant hashtag groups based on niche,
-            service, product and location.
-          </p>
-        </div>
 
+<div class="question">
 
-        <div class="card">
-          <div class="card-number">06</div>
-          <h3>Competitor Analysis</h3>
-          <p>
-            Identify competitor positioning, content gaps
-            and optimization opportunities.
-          </p>
-        </div>
+<div class="question-title">
+2. Does your Bio clearly explain what your business offers?
+</div>
 
-      </div>
+<div class="options">
 
-    </div>
+<label class="option">
+<input type="radio" name="q2" value="0">
+No
+</label>
 
-  </section>
+<label class="option">
+<input type="radio" name="q2" value="1">
+Partially
+</label>
 
+<label class="option">
+<input type="radio" name="q2" value="2">
+Yes
+</label>
 
-  <!-- PROCESS -->
+</div>
 
-  <section id="process">
+</div>
 
-    <div class="container">
 
-      <div class="section-title">
+<div class="question">
 
-        <h2>
-          From Audit to Optimization
-        </h2>
+<div class="question-title">
+3. Does your Bio contain relevant keywords naturally?
+</div>
 
-        <p>
-          A simple process designed for businesses and creators.
-        </p>
+<div class="options">
 
-      </div>
+<label class="option">
+<input type="radio" name="q3" value="0">
+No
+</label>
 
+<label class="option">
+<input type="radio" name="q3" value="1">
+Partially
+</label>
 
-      <div class="process">
+<label class="option">
+<input type="radio" name="q3" value="2">
+Yes
+</label>
 
-        <div class="process-item">
-          <div class="num">01</div>
-          <h3>Audit</h3>
-          <p>
-            Analyze your current Instagram SEO.
-          </p>
-        </div>
+</div>
 
-        <div class="process-item">
-          <div class="num">02</div>
-          <h3>Research</h3>
-          <p>
-            Research keywords and competitors.
-          </p>
-        </div>
+</div>
 
-        <div class="process-item">
-          <div class="num">03</div>
-          <h3>Optimize</h3>
-          <p>
-            Improve your profile and SEO structure.
-          </p>
-        </div>
 
-        <div class="process-item">
-          <div class="num">04</div>
-          <h3>Monitor</h3>
-          <p>
-            Track opportunities and improvements.
-          </p>
-        </div>
+<div class="question">
 
-      </div>
+<div class="question-title">
+4. Do you consistently create content around your niche?
+</div>
 
-    </div>
+<div class="options">
 
-  </section>
+<label class="option">
+<input type="radio" name="q4" value="0">
+No
+</label>
 
+<label class="option">
+<input type="radio" name="q4" value="1">
+Sometimes
+</label>
 
-  <!-- PRICING -->
+<label class="option">
+<input type="radio" name="q4" value="2">
+Yes
+</label>
 
-  <section id="pricing">
+</div>
 
-    <div class="container">
+</div>
 
-      <div class="section-title">
 
-        <h2>
-          Instagram SEO Plans
-        </h2>
+<div class="question">
 
-        <p>
-          Start with an audit or choose ongoing optimization.
-        </p>
+<div class="question-title">
+5. Do your captions naturally include relevant search keywords?
+</div>
 
-      </div>
+<div class="options">
 
+<label class="option">
+<input type="radio" name="q5" value="0">
+No
+</label>
 
-      <div class="pricing">
+<label class="option">
+<input type="radio" name="q5" value="1">
+Sometimes
+</label>
 
+<label class="option">
+<input type="radio" name="q5" value="2">
+Yes
+</label>
 
-        <!-- AUDIT -->
+</div>
 
-        <div class="price-card">
+</div>
 
-          <h3>SEO Audit</h3>
 
-          <div class="price">
-            ₹999
-            <span>one time</span>
-          </div>
+<div class="question">
 
-          <ul class="features">
-            <li>Instagram SEO Score</li>
-            <li>Profile Audit</li>
-            <li>Keyword Audit</li>
-            <li>Content Audit</li>
-            <li>Local SEO Audit</li>
-            <li>PDF Report</li>
-          </ul>
+<div class="question-title">
+6. Do your Reels/posts clearly communicate their topic?
+</div>
 
-          <a href="#contact" class="full-btn">
-            Get My Audit
-          </a>
+<div class="options">
 
-        </div>
+<label class="option">
+<input type="radio" name="q6" value="0">
+No
+</label>
 
+<label class="option">
+<input type="radio" name="q6" value="1">
+Sometimes
+</label>
 
-        <!-- SETUP -->
+<label class="option">
+<input type="radio" name="q6" value="2">
+Yes
+</label>
 
-        <div class="price-card featured">
+</div>
 
-          <div class="popular">
-            Most Popular
-          </div>
+</div>
 
-          <h3>SEO Setup</h3>
 
-          <div class="price">
-            ₹3,999
-            <span>one time</span>
-          </div>
+<div class="question">
 
-          <ul class="features">
-            <li>Everything in Audit</li>
-            <li>Profile Optimization</li>
-            <li>Keyword Research</li>
-            <li>Content Pillars</li>
-            <li>Competitor Analysis</li>
-            <li>30-Day Roadmap</li>
-          </ul>
+<div class="question-title">
+7. Do you use relevant hashtags instead of random hashtags?
+</div>
 
-          <a href="#contact" class="full-btn">
-            Optimize My Instagram
-          </a>
+<div class="options">
 
-        </div>
+<label class="option">
+<input type="radio" name="q7" value="0">
+No
+</label>
 
+<label class="option">
+<input type="radio" name="q7" value="1">
+Sometimes
+</label>
 
-        <!-- GROWTH -->
+<label class="option">
+<input type="radio" name="q7" value="2">
+Yes
+</label>
 
-        <div class="price-card">
+</div>
 
-          <h3>SEO Growth</h3>
+</div>
 
-          <div class="price">
-            ₹5,999
-            <span>/month</span>
-          </div>
 
-          <ul class="features">
-            <li>Profile Monitoring</li>
-            <li>Keyword Updates</li>
-            <li>Content SEO</li>
-            <li>Local SEO</li>
-            <li>Competitor Monitoring</li>
-            <li>Monthly Report</li>
-          </ul>
+<div class="question">
 
-          <a href="#contact" class="full-btn">
-            Start Growth
-          </a>
+<div class="question-title">
+8. If you are a local business, do you use location signals?
+</div>
 
-        </div>
+<div class="options">
 
-      </div>
+<label class="option">
+<input type="radio" name="q8" value="0">
+No
+</label>
 
-    </div>
+<label class="option">
+<input type="radio" name="q8" value="1">
+Sometimes
+</label>
 
-  </section>
+<label class="option">
+<input type="radio" name="q8" value="2">
+Yes
+</label>
 
+</div>
 
-  <!-- CTA -->
+</div>
 
-  <section id="contact">
 
-    <div class="container">
+<div class="question">
 
-      <div class="cta">
+<div class="question-title">
+9. Do you have clear content pillars?
+</div>
 
-        <h2>
-          Ready to Optimize Your Instagram?
-        </h2>
+<div class="options">
 
-        <p>
-          Start with an Instagram SEO audit and discover
-          where your profile can improve.
-        </p>
+<label class="option">
+<input type="radio" name="q9" value="0">
+No
+</label>
 
-        <a href="mailto:hello@divyom.com" class="btn btn-primary">
-          Contact Us
-        </a>
+<label class="option">
+<input type="radio" name="q9" value="1">
+Somewhat
+</label>
 
-      </div>
+<label class="option">
+<input type="radio" name="q9" value="2">
+Yes
+</label>
 
-    </div>
+</div>
 
-  </section>
+</div>
 
 
-  <!-- FOOTER -->
+<div class="question">
 
-  <footer>
+<div class="question-title">
+10. Does your Instagram have a clear CTA for customers?
+</div>
 
-    <div class="container">
+<div class="options">
 
-      © 2026 Divyom Digital Media.
-      Instagram SEO is an independent optimization service.
+<label class="option">
+<input type="radio" name="q10" value="0">
+No
+</label>
 
-    </div>
+<label class="option">
+<input type="radio" name="q10" value="1">
+Somewhat
+</label>
 
-  </footer>
+<label class="option">
+<input type="radio" name="q10" value="2">
+Yes
+</label>
 
+</div>
 
-  <!-- JAVASCRIPT -->
+</div>
 
-  <script>
 
-    function checkScore() {
+<div class="submit-area">
 
-      const username =
-        document.getElementById("username").value.trim();
+<button
+onclick="runAudit()"
+class="btn btn-primary"
+>
+Generate My Instagram SEO Score
+</button>
 
-      const result =
-        document.getElementById("scoreResult");
+</div>
 
-      if (username === "") {
 
-        alert("Please enter your Instagram username.");
+<div class="small">
+This is an independent preliminary assessment and is not an official Instagram or Meta ranking score.
+</div>
 
-        return;
-      }
 
-      result.style.display = "block";
+<div id="result" class="result">
 
-    }
+<div class="result-card">
 
-  </script>
+<div class="score-wrap">
+
+<div class="score" id="score">
+0/100
+</div>
+
+<div class="status" id="status">
+Your Result
+</div>
+
+</div>
+
+
+<div class="category-score">
+
+<h3>
+Audit Breakdown
+</h3>
+
+<div class="category-row">
+
+<div class="category-head">
+<span>Profile SEO</span>
+<span id="profileScore">0/20</span>
+</div>
+
+<div class="bar">
+<div class="bar-fill" id="profileBar" style="width:0%"></div>
+</div>
+
+</div>
+
+
+<div class="category-row">
+
+<div class="category-head">
+<span>Keyword SEO</span>
+<span id="keywordScore">0/20</span>
+</div>
+
+<div class="bar">
+<div class="bar-fill" id="keywordBar" style="width:0%"></div>
+</div>
+
+</div>
+
+
+<div class="category-row">
+
+<div class="category-head">
+<span>Content SEO</span>
+<span id="contentScore">0/20</span>
+</div>
+
+<div class="bar">
+<div class="bar-fill" id="contentBar" style="width:0%"></div>
+</div>
+
+</div>
+
+
+<div class="category-row">
+
+<div class="category-head">
+<span>Local SEO</span>
+<span id="localScore">0/15</span>
+</div>
+
+<div class="bar">
+<div class="bar-fill" id="localBar" style="width:0%"></div>
+</div>
+
+</div>
+
+
+<div class="category-row">
+
+<div class="category-head">
+<span>Metadata</span>
+<span id="metadataScore">0/10</span>
+</div>
+
+<div class="bar">
+<div class="bar-fill" id="metadataBar" style="width:0%"></div>
+</div>
+
+</div>
+
+
+<div class="category-row">
+
+<div class="category-head">
+<span>Authority</span>
+<span id="authorityScore">0/15</span>
+</div>
+
+<div class="bar">
+<div class="bar-fill" id="authorityBar" style="width:0%"></div>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="result-grid">
+
+<div class="result-section strength">
+
+<h3>
+✓ Strengths
+</h3>
+
+<ul id="strengths"></ul>
+
+</div>
+
+
+<div class="result-section issue">
+
+<h3>
+⚠ Priority Opportunities
+</h3>
+
+<ul id="issues"></ul>
+
+</div>
+
+</div>
+
+
+<div class="cta">
+
+<h3>
+Want the Complete Instagram SEO Audit?
+</h3>
+
+<p>
+Get a detailed audit with keyword research, competitor analysis,
+content recommendations and a professional PDF report.
+</p>
+
+<a
+href="mailto:hello@divyom.com?subject=Instagram SEO Audit Request"
+class="btn btn-primary"
+>
+Get Full Audit — ₹999
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="section" id="services">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>
+What We Optimize
+</h2>
+
+<p>
+Our Instagram SEO service focuses on the major discoverability areas.
+</p>
+
+</div>
+
+
+<div class="services">
+
+<div class="service">
+<div class="service-number">01</div>
+<h3>Profile SEO</h3>
+<p>
+Name, bio, category, CTA and profile positioning.
+</p>
+</div>
+
+<div class="service">
+<div class="service-number">02</div>
+<h3>Keyword Research</h3>
+<p>
+Primary, secondary, local and long-tail keyword opportunities.
+</p>
+</div>
+
+<div class="service">
+<div class="service-number">03</div>
+<h3>Content SEO</h3>
+<p>
+Content pillars, topics, captions and search relevance.
+</p>
+</div>
+
+<div class="service">
+<div class="service-number">04</div>
+<h3>Local SEO</h3>
+<p>
+Location relevance and local search opportunities.
+</p>
+</div>
+
+<div class="service">
+<div class="service-number">05</div>
+<h3>Metadata</h3>
+<p>
+Hashtag and descriptive metadata optimization.
+</p>
+</div>
+
+<div class="service">
+<div class="service-number">06</div>
+<h3>Competitor Analysis</h3>
+<p>
+Identify competitor strengths and content gaps.
+</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="section" id="pricing">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>
+Choose Your Plan
+</h2>
+
+<p>
+Start with an audit or move to complete optimization.
+</p>
+
+</div>
+
+
+<div class="pricing">
+
+<div class="price-card">
+
+<h3>SEO Audit</h3>
+
+<div class="price">
+₹999
+<span>one time</span>
+</div>
+
+<ul class="features">
+<li>Instagram SEO Score</li>
+<li>Profile Audit</li>
+<li>Keyword Audit</li>
+<li>Content Audit</li>
+<li>Local SEO Audit</li>
+<li>PDF Report</li>
+</ul>
+
+<a
+href="mailto:hello@divyom.com?subject=I want Instagram SEO Audit"
+class="full-btn"
+>
+Get Audit
+</a>
+
+</div>
+
+
+<div class="price-card featured">
+
+<h3>SEO Setup</h3>
+
+<div class="price">
+₹3,999
+<span>one time</span>
+</div>
+
+<ul class="features">
+<li>Complete Audit</li>
+<li>Profile Optimization</li>
+<li>Keyword Research</li>
+<li>Content Pillars</li>
+<li>Competitor Analysis</li>
+<li>30-Day Roadmap</li>
+</ul>
+
+<a
+href="mailto:hello@divyom.com?subject=I want Instagram SEO Setup"
+class="full-btn"
+>
+Get Setup
+</a>
+
+</div>
+
+
+<div class="price-card">
+
+<h3>SEO Growth</h3>
+
+<div class="price">
+₹5,999
+<span>/month</span>
+</div>
+
+<ul class="features">
+<li>Monthly Monitoring</li>
+<li>Keyword Updates</li>
+<li>Content SEO</li>
+<li>Local SEO</li>
+<li>Competitor Monitoring</li>
+<li>Monthly Report</li>
+</ul>
+
+<a
+href="mailto:hello@divyom.com?subject=I want Instagram SEO Growth"
+class="full-btn"
+>
+Start Growth
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+
+<div class="container">
+
+© 2026 Divyom Digital Media.
+<br>
+DDM Instagram SEO Score™ is an independent assessment.
+
+</div>
+
+</footer>
+
+
+<script>
+
+const options =
+document.querySelectorAll(".option");
+
+options.forEach(option => {
+
+option.addEventListener("click", function(){
+
+const parent =
+this.parentElement;
+
+parent
+.querySelectorAll(".option")
+.forEach(item => {
+
+item.classList.remove("selected");
+
+});
+
+this.classList.add("selected");
+
+});
+
+});
+
+
+function getAnswer(number){
+
+const selected =
+document.querySelector(
+'input[name="q'+number+'"]:checked'
+);
+
+return selected ? Number(selected.value) : null;
+
+}
+
+
+function runAudit(){
+
+const username =
+document.getElementById("username").value.trim();
+
+const business =
+document.getElementById("business").value.trim();
+
+const businessType =
+document.getElementById("businessType").value;
+
+if(!username || !business || !businessType){
+
+alert(
+"Please enter Instagram username, business name and business type."
+);
+
+return;
+
+}
+
+
+let answers = [];
+
+for(let i=1;i<=10;i++){
+
+const answer = getAnswer(i);
+
+if(answer === null){
+
+alert(
+"Please answer all 10 audit questions."
+);
+
+return;
+
+}
+
+answers.push(answer);
+
+}
+
+
+/*
+QUESTION WEIGHTS
+
+Profile:
+Q1 = 10
+Q2 = 10
+
+Keywords:
+Q3 = 10
+
+Content:
+Q4 = 10
+Q5 = 10
+Q6 = 10
+
+Metadata:
+Q7 = 10
+
+Local:
+Q8 = 10
+
+Content:
+Q9 = 10
+
+Profile:
+Q10 = 10
+
+The 10 questions create
+a preliminary 100-point score.
+*/
+
+
+let rawScore = 0;
+
+answers.forEach(answer => {
+
+rawScore += answer;
+
+});
+
+let score =
+Math.round((rawScore / 20) * 100);
+
+
+let status = "";
+
+if(score < 40){
+
+status = "Poor — Major Optimization Needed";
+
+}else if(score < 60){
+
+status = "Needs Improvement";
+
+}else if(score < 75){
+
+status = "Good — Needs Optimization";
+
+}else if(score < 90){
+
+status = "Strong";
+
+}else{
+
+status = "Excellent";
+
+}
+
+
+document.getElementById("score").innerText =
+score + "/100";
+
+document.getElementById("status").innerText =
+status;
+
+
+/*
+CATEGORY SCORES
+*/
+
+
+let profile =
+Math.round(
+((answers[0] + answers[1] + answers[9]) / 6) * 20
+);
+
+let keyword =
+Math.round(
+(answers[2] / 2) * 20
+);
+
+let content =
+Math.round(
+((answers[3] + answers[4] + answers[5] + answers[8]) / 8) * 20
+);
+
+let local =
+Math.round(
+(answers[7] / 2) * 15
+);
+
+let metadata =
+Math.round(
+(answers[6] / 2) * 10
+);
+
+let authority =
+Math.max(
+0,
+score -
+profile -
+keyword -
+content -
+local -
+metadata
+);
+
+if(authority > 15){
+
+authority = 15;
+
+}
+
+
+/*
+DISPLAY CATEGORY SCORES
+*/
+
+
+document.getElementById("profileScore").innerText =
+profile + "/20";
+
+document.getElementById("keywordScore").innerText =
+keyword + "/20";
+
+document.getElementById("contentScore").innerText =
+content + "/20";
+
+document.getElementById("localScore").innerText =
+local + "/15";
+
+document.getElementById("metadataScore").innerText =
+metadata + "/10";
+
+document.getElementById("authorityScore").innerText =
+authority + "/15";
+
+
+document.getElementById("profileBar").style.width =
+(profile / 20 * 100) + "%";
+
+document.getElementById("keywordBar").style.width =
+(keyword / 20 * 100) + "%";
+
+document.getElementById("contentBar").style.width =
+(content / 20 * 100) + "%";
+
+document.getElementById("localBar").style.width =
+(local / 15 * 100) + "%";
+
+document.getElementById("metadataBar").style.width =
+(metadata / 10 * 100) + "%";
+
+document.getElementById("authorityBar").style.width =
+(authority / 15 * 100) + "%";
+
+
+/*
+STRENGTHS
+*/
+
+
+const strengths =
+document.getElementById("strengths");
+
+const issues =
+document.getElementById("issues");
+
+strengths.innerHTML = "";
+issues.innerHTML = "";
+
+
+const checks = [
+
+{
+answer:answers[0],
+good:"Your Instagram Name field has keyword potential.",
+bad:"Add a relevant primary keyword to your Name field."
+},
+
+{
+answer:answers[1],
+good:"Your Bio communicates your business clearly.",
+bad:"Make your Bio clearly explain your service and target customer."
+},
+
+{
+answer:answers[2],
+good:"Your Bio uses relevant keyword context.",
+bad:"Add relevant keywords naturally to your Bio."
+},
+
+{
+answer:answers[3],
+good:"Your content is reasonably niche-focused.",
+bad:"Create consistent content pillars around your niche."
+},
+
+{
+answer:answers[4],
+good:"Your captions support keyword relevance.",
+bad:"Use natural search-focused language in your captions."
+},
+
+{
+answer:answers[5],
+good:"Your content topics are clearly communicated.",
+bad:"Make the topic of each Reel/post clearer."
+},
+
+{
+answer:answers[6],
+good:"Your hashtag strategy appears relevant.",
+bad:"Replace random hashtags with relevant niche and local groups."
+},
+
+{
+answer:answers[7],
+good:"You are using local signals.",
+bad:"Use location context where relevant for your target market."
+},
+
+{
+answer:answers[8],
+good:"Your content pillars are reasonably structured.",
+bad:"Build 3–5 repeatable content pillars."
+},
+
+{
+answer:answers[9],
+good:"Your profile has a customer CTA.",
+bad:"Add a clear CTA such as WhatsApp, Call, Book or Shop."
+}
+
+];
+
+
+checks.forEach(check => {
+
+const li =
+document.createElement("li");
+
+if(check.answer === 2){
+
+li.innerText = check.good;
+
+strengths.appendChild(li);
+
+}else{
+
+li.innerText = check.bad;
+
+issues.appendChild(li);
+
+}
+
+});
+
+
+if(strengths.children.length === 0){
+
+const li =
+document.createElement("li");
+
+li.innerText =
+"Your account needs foundational optimization.";
+
+strengths.appendChild(li);
+
+}
+
+
+document.getElementById("result").style.display =
+"block";
+
+
+document.getElementById("result")
+.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+}
+
+</script>
 
 </body>
 </html>
