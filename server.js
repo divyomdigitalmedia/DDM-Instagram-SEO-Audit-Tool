@@ -133,6 +133,18 @@ app.get("/auth/instagram/callback", async (req, res) => {
     // Do not display the access token.
     // --------------------------------
 
+    const auditData = {
+  username: profileData.username || "",
+  name: profileData.name || "",
+  biography: profileData.biography || "",
+  profile_picture_url: profileData.profile_picture_url || "",
+  followers_count: profileData.followers_count || 0,
+  follows_count: profileData.follows_count || 0,
+  media_count: profileData.media_count || 0
+};
+
+console.log("Instagram audit data:", auditData);
+    
     console.log("Instagram user connected:", profileData.username);
 
     res.send(`
@@ -232,15 +244,168 @@ app.get("/auth/instagram/callback", async (req, res) => {
 
 app.post("/api/audit", (req, res) => {
 
-  const username = String(req.body.username || "")
+  const profile = req.body.profile || {};
+
+  const username = String(profile.username || "")
     .trim()
     .replace(/^@/, "");
+
+  const biography = String(profile.biography || "").trim();
+  const name = String(profile.name || "").trim();
 
   if (!username) {
     return res.status(400).json({
       success: false,
-      message: "Instagram username is required."
+      message: "Instagram profile data is required."
     });
+  }
+
+  let profileScore = 50;
+  let keywordScore = 50;
+  let contentScore = 50;
+  let discoverabilityScore = 50;
+
+  const strengths = [];
+  const opportunities = [];
+
+  // -------------------------
+  // Profile SEO
+  // -------------------------
+
+  if (name.length >= 3) {
+    profileScore += 15;
+    strengths.push("Profile name is available.");
+  } else {
+    opportunities.push(
+      "Add a clear searchable name to your Instagram profile."
+    );
+  }
+
+  if (biography.length >= 50) {
+    profileScore += 15;
+    strengths.push("Bio contains useful profile information.");
+  } else {
+    opportunities.push(
+      "Expand your bio with niche keywords and a clear value proposition."
+    );
+  }
+
+  if (biography.length >= 100) {
+    profileScore += 10;
+  }
+
+  // -------------------------
+  // Keyword SEO
+  // -------------------------
+
+  const keywordCount =
+    biography
+      .split(/\s+/)
+      .filter(word => word.length >= 4)
+      .length;
+
+  if (keywordCount >= 5) {
+    keywordScore += 20;
+    strengths.push("Bio contains multiple descriptive terms.");
+  } else {
+    opportunities.push(
+      "Add more relevant niche keywords to your profile."
+    );
+  }
+
+  if (username.length >= 4 && username.length <= 20) {
+    keywordScore += 10;
+  }
+
+  // -------------------------
+  // Content
+  // -------------------------
+
+  const mediaCount = Number(profile.media_count || 0);
+
+  if (mediaCount >= 10) {
+    contentScore += 25;
+    strengths.push("Profile has an established content library.");
+  } else if (mediaCount > 0) {
+    contentScore += 10;
+    opportunities.push(
+      "Increase the consistency of your content publishing."
+    );
+  } else {
+    opportunities.push(
+      "Create consistent content around searchable topics."
+    );
+  }
+
+  // -------------------------
+  // Discoverability
+  // -------------------------
+
+  if (biography.length > 0) {
+    discoverabilityScore += 15;
+  }
+
+  if (name.length > 0) {
+    discoverabilityScore += 15;
+  }
+
+  if (mediaCount >= 10) {
+    discoverabilityScore += 15;
+  }
+
+  if (discoverabilityScore < 65) {
+    opportunities.push(
+      "Improve profile signals and searchable content structure."
+    );
+  }
+
+  // -------------------------
+  // Limits
+  // -------------------------
+
+  profileScore = Math.min(profileScore, 100);
+  keywordScore = Math.min(keywordScore, 100);
+  contentScore = Math.min(contentScore, 100);
+  discoverabilityScore = Math.min(discoverabilityScore, 100);
+
+  const overallScore = Math.round(
+    (
+      profileScore +
+      keywordScore +
+      contentScore +
+      discoverabilityScore
+    ) / 4
+  );
+
+  res.json({
+
+    success: true,
+
+    profile: {
+      username,
+      name,
+      biography,
+      media_count: mediaCount
+    },
+
+    score: overallScore,
+
+    categories: {
+      profileSEO: profileScore,
+      keywordSEO: keywordScore,
+      contentSEO: contentScore,
+      discoverabilitySEO: discoverabilityScore
+    },
+
+    strengths,
+    opportunities,
+
+    notice:
+      "This is an independent Instagram SEO assessment and not an official Instagram ranking score."
+
+  });
+
+});
   }
 
   res.json({
