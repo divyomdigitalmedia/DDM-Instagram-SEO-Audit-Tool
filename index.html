@@ -769,191 +769,240 @@ function connectInstagram() {
 }
 function analyzeUsername(){
 
-const input=document.getElementById("username");
+  const input = document.getElementById("username");
 
-const username=cleanUsername(input.value);
+  const username = cleanUsername(input.value);
 
-if(!username){
+  if (!username) {
+    alert("Please enter an Instagram username.");
+    return;
+  }
 
-alert("Please enter an Instagram username.");
+  if (username.length < 2) {
+    alert("Please enter a valid Instagram username.");
+    return;
+  }
 
-return;
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("result").style.display = "none";
+
+  setTimeout(function(){
+
+    let profileScore = 50;
+    let keywordScore = 45;
+    let contentScore = 40;
+    let localScore = 35;
+
+    const strengths = [];
+    const issues = [];
+
+    // --------------------------------
+    // Username SEO
+    // --------------------------------
+
+    if (username.length >= 4 && username.length <= 20) {
+      profileScore += 15;
+      strengths.push("Username has a practical length for branding.");
+    } else {
+      issues.push("Consider using a shorter, clearer username.");
+    }
+
+    if (!username.includes("_") && !username.includes(".")) {
+      profileScore += 10;
+      strengths.push("Username has a clean structure.");
+    } else {
+      issues.push("A simpler username may be easier to remember.");
+    }
+
+    if (/^[a-z0-9._]+$/i.test(username)) {
+      profileScore += 5;
+    }
+
+    // --------------------------------
+    // Keyword signals
+    // --------------------------------
+
+    const words = username
+      .replace(/[._-]/g, " ")
+      .split(/\s+/)
+      .filter(word => word.length >= 3);
+
+    if (words.length >= 2) {
+      keywordScore += 20;
+      strengths.push("Username contains multiple searchable word signals.");
+    } else {
+      issues.push(
+        "Consider including a relevant niche or business keyword."
+      );
+    }
+
+    if (username.length >= 5) {
+      keywordScore += 10;
+    }
+
+    // --------------------------------
+    // Content SEO
+    // --------------------------------
+
+    contentScore += 15;
+
+    issues.push(
+      "Content SEO cannot be fully evaluated from a username alone."
+    );
+
+    // --------------------------------
+    // Local SEO
+    // --------------------------------
+
+    const localWords = [
+      "india",
+      "ahmedabad",
+      "surat",
+      "mumbai",
+      "delhi",
+      "rajkot",
+      "vadodara",
+      "usa",
+      "uk",
+      "dubai"
+    ];
+
+    const hasLocation = localWords.some(function(location){
+      return username.toLowerCase().includes(location);
+    });
+
+    if (hasLocation) {
+      localScore += 30;
+      strengths.push("Username contains a potential location signal.");
+    } else {
+      localScore += 10;
+      issues.push(
+        "Add a location signal when local customers are important."
+      );
+    }
+
+    // --------------------------------
+    // Score limits
+    // --------------------------------
+
+    profileScore = Math.min(profileScore, 100);
+    keywordScore = Math.min(keywordScore, 100);
+    contentScore = Math.min(contentScore, 100);
+    localScore = Math.min(localScore, 100);
+
+    const score = Math.round(
+      (
+        profileScore +
+        keywordScore +
+        contentScore +
+        localScore
+      ) / 4
+    );
+
+    // --------------------------------
+    // Status
+    // --------------------------------
+
+    let status = "";
+
+    if (score < 55) {
+      status = "Needs Significant Optimization";
+    } else if (score < 70) {
+      status = "Good Foundation — Needs Improvement";
+    } else if (score < 82) {
+      status = "Strong Foundation";
+    } else {
+      status = "Very Strong Preliminary Score";
+    }
+
+    // --------------------------------
+    // Display score
+    // --------------------------------
+
+    document.getElementById("score").innerText = score;
+
+    document.getElementById("status").innerText = status;
+
+    document.getElementById("profileBar").style.width =
+      profileScore + "%";
+
+    document.getElementById("keywordBar").style.width =
+      keywordScore + "%";
+
+    document.getElementById("contentBar").style.width =
+      contentScore + "%";
+
+    document.getElementById("localBar").style.width =
+      localScore + "%";
+
+    document.getElementById("profileText").innerText =
+      "Username structure and profile positioning signals.";
+
+    document.getElementById("keywordText").innerText =
+      "Searchable keyword signals found in the username.";
+
+    document.getElementById("contentText").innerText =
+      "Username-only audit cannot fully evaluate content.";
+
+    document.getElementById("localText").innerText =
+      "Potential local discovery signals from the username.";
+
+    // --------------------------------
+    // Strengths
+    // --------------------------------
+
+    const strengthsList =
+      document.getElementById("strengths");
+
+    strengthsList.innerHTML = "";
+
+    strengths.forEach(function(text){
+
+      const li = document.createElement("li");
+
+      li.innerText = text;
+
+      strengthsList.appendChild(li);
+
+    });
+
+    // --------------------------------
+    // Issues
+    // --------------------------------
+
+    const issuesList =
+      document.getElementById("issues");
+
+    issuesList.innerHTML = "";
+
+    issues.forEach(function(text){
+
+      const li = document.createElement("li");
+
+      li.innerText = text;
+
+      issuesList.appendChild(li);
+
+    });
+
+    // --------------------------------
+    // Show result
+    // --------------------------------
+
+    document.getElementById("loading").style.display =
+      "none";
+
+    document.getElementById("result").style.display =
+      "block";
+
+    document.getElementById("result").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  }, 700);
+
 }
-
-if(username.length<2){
-
-alert("Please enter a valid Instagram username.");
-
-return;
-}
-
-
-document.getElementById("loading").style.display="block";
-
-document.getElementById("result").style.display="none";
-
-
-setTimeout(function(){
-
-/*
-IMPORTANT:
-
-This is a FREE MVP.
-
-Because this GitHub Pages version does not
-have an Instagram/Meta backend, it does not
-pretend to fetch private or unavailable
-Instagram data.
-
-The score below is a preliminary
-username/profile-structure audit.
-*/
-
-
-let score=58;
-
-
-/* Username quality */
-
-if(username.length>=4 && username.length<=20){
-score+=7;
-}
-
-if(!username.includes("_") && !username.includes(".")){
-score+=4;
-}
-
-if(/^[a-z0-9._]+$/i.test(username)){
-score+=3;
-}
-
-
-/* Create a deterministic result for the same username */
-
-let total=0;
-
-for(let i=0;i<username.length;i++){
-total+=username.charCodeAt(i);
-}
-
-let variation=total%10;
-
-score+=variation;
-
-if(score>89){
-score=89;
-}
-
-if(score<45){
-score=45;
-}
-
-
-let profile=Math.min(100,score+5);
-let keyword=Math.max(35,score-4);
-let content=Math.max(35,score-8);
-let local=Math.max(30,score-13);
-
-
-document.getElementById("score").innerText=score;
-
-
-let status="";
-
-if(score<55){
-status="Needs Significant Optimization";
-}
-else if(score<70){
-status="Good Foundation — Needs Improvement";
-}
-else if(score<82){
-status="Strong Foundation";
-}
-else{
-status="Very Strong Preliminary Score";
-}
-
-document.getElementById("status").innerText=status;
-
-
-document.getElementById("profileBar").style.width=profile+"%";
-document.getElementById("keywordBar").style.width=keyword+"%";
-document.getElementById("contentBar").style.width=content+"%";
-document.getElementById("localBar").style.width=local+"%";
-
-
-document.getElementById("profileText").innerText=
-"Profile structure has optimization opportunities.";
-
-document.getElementById("keywordText").innerText=
-"Improve keyword targeting around your niche.";
-
-document.getElementById("contentText").innerText=
-"Build consistent searchable content topics.";
-
-document.getElementById("localText").innerText=
-"Add stronger local signals when location matters.";
-
-
-const strengths=document.getElementById("strengths");
-
-const issues=document.getElementById("issues");
-
-strengths.innerHTML="";
-issues.innerHTML="";
-
-
-const strengthData=[
-"Instagram username is available for analysis.",
-"Your profile has a clear optimization starting point.",
-"Username structure can be incorporated into a broader SEO strategy."
-];
-
-
-const issueData=[
-"Primary profile keywords should be reviewed.",
-"Bio keyword placement should be optimized.",
-"Content topics should target specific search intent.",
-"Local keywords should be used when relevant.",
-"Hashtag and metadata strategy should be reviewed."
-];
-
-
-strengthData.forEach(function(text){
-
-const li=document.createElement("li");
-
-li.innerText=text;
-
-strengths.appendChild(li);
-
-});
-
-
-issueData.forEach(function(text){
-
-const li=document.createElement("li");
-
-li.innerText=text;
-
-issues.appendChild(li);
-
-});
-
-
-document.getElementById("loading").style.display="none";
-
-document.getElementById("result").style.display="block";
-
-document.getElementById("result").scrollIntoView({
-behavior:"smooth",
-block:"start"
-});
-
-},1200);
-
-}
-
 </script>
 
 </body>
