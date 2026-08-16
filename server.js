@@ -496,48 +496,49 @@ app.get("/api/free-audit", (req, res) => {
 
   return res.json({
 
-  success: true,
+    success: true,
 
-  auditType: "free",
+    auditType: "free",
 
-  profile: {
-    username: username,
+    profile: {
+      username: username,
+      name: name,
+      biography: biography,
+      followers_count: followers,
+      following_count: following,
+      media_count: mediaCount,
+      profile_picture_url: profileImage || ""
+    },
 
-    name: name,
+    score: overallScore,
 
-    biography: biography,
+    categories: {
+      profileSEO: profileScore,
+      keywordSEO: keywordScore,
+      contentSEO: contentScore,
+      discoverabilitySEO: discoverabilityScore
+    },
 
-    followers_count: followers,
+    strengths: strengths.slice(0, 5),
 
-    following_count: following,
+    opportunities: opportunities.slice(0, 5),
 
-    media_count: mediaCount,
+    notice:
+      "This is an independent preliminary Instagram SEO assessment and is not an official Instagram or Meta ranking score."
 
-    profile_picture_url:
-      profileImage || ""
-  },
+  });
 
-  score: overallScore,
+} catch (error) {
 
-  categories: {
-    profileSEO: profileScore,
+  console.error("Free audit error:", error);
 
-    keywordSEO: keywordScore,
+  return res.status(500).json({
+    success: false,
+    message:
+      "Something went wrong while generating the free Instagram audit."
+  });
 
-    contentSEO: contentScore,
-
-    discoverabilitySEO:
-      discoverabilityScore
-  },
-
-  strengths:
-    strengths.slice(0, 5),
-
-  opportunities:
-    opportunities.slice(0, 5),
-
-  notice:
-    "This is an independent preliminary Instagram SEO assessment and is not an official Instagram or Meta ranking score."
+}
 
 });
 // -------------------------
