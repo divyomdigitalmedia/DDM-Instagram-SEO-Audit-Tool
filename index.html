@@ -427,27 +427,57 @@ Connect your Professional Instagram account to enable the full audit.
   
 <div class="audit" id="audit">
 
-<div class="input-row">
+<div class="audit" id="audit">
 
-<input
-id="username"
-type="text"
-placeholder="@yourusername"
-autocomplete="off"
->
+  <div class="input-row">
 
-<button onclick="analyze()">
-Analyze Instagram
-</button>
+    <input
+      id="username"
+      type="text"
+      placeholder="@yourusername"
+      autocomplete="off"
+    >
+
+    <button onclick="analyzeUsername()">
+      Analyze
+    </button>
+
+  </div>
+
+  <div class="note">
+    Enter your Instagram username to get a free preliminary SEO audit.
+  </div>
+
+  <div
+    style="
+      text-align:center;
+      margin:22px 0;
+      color:#777b88;
+      font-size:13px;
+    "
+  >
+    OR
+  </div>
+
+  <button
+    onclick="connectInstagram()"
+    style="
+      width:100%;
+      background:#a78bfa;
+      color:#08090d;
+    "
+  >
+    Connect Instagram
+  </button>
+
+  <div
+    class="note"
+    style="text-align:center;"
+  >
+    Connect your Instagram account for a more detailed audit.
+  </div>
 
 </div>
-
-<div class="note">
-Example: @yourbusiness
-</div>
-
-</div>
-
 <div class="loading" id="loading">
 Analyzing Instagram SEO...
 </div>
@@ -737,7 +767,7 @@ function connectInstagram() {
 
   window.location.href = instagramLoginUrl;
 }
-function analyze(){
+function analyzeUsername(){
 
 const input=document.getElementById("username");
 
