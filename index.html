@@ -988,6 +988,242 @@ window.addEventListener("DOMContentLoaded", async function () {
     }
 
 
+    // --------------------------------
+    // Display audit
+    // --------------------------------
+
+    const result =
+      document.getElementById("result");
+
+    if (result) {
+      result.style.display = "block";
+    }
+
+
+    // Score
+
+    const score =
+      document.getElementById("score");
+
+    if (score) {
+      score.innerText = data.score;
+    }
+
+
+    // Profile SEO
+
+    const profileBar =
+      document.getElementById("profileBar");
+
+    if (profileBar) {
+      profileBar.style.width =
+        data.categories.profileSEO + "%";
+    }
+
+
+    // Keyword SEO
+
+    const keywordBar =
+      document.getElementById("keywordBar");
+
+    if (keywordBar) {
+      keywordBar.style.width =
+        data.categories.keywordSEO + "%";
+    }
+
+
+    // Content SEO
+
+    const contentBar =
+      document.getElementById("contentBar");
+
+    if (contentBar) {
+      contentBar.style.width =
+        data.categories.contentSEO + "%";
+    }
+
+
+    // Discoverability
+
+    const localBar =
+      document.getElementById("localBar");
+
+    if (localBar) {
+      localBar.style.width =
+        data.categories.discoverabilitySEO + "%";
+    }
+
+
+    // --------------------------------
+    // Status
+    // --------------------------------
+
+    const auditStatus =
+      document.getElementById("status");
+
+    if (auditStatus) {
+
+      if (data.score < 55) {
+
+        auditStatus.innerText =
+          "Needs Significant Optimization";
+
+      } else if (data.score < 70) {
+
+        auditStatus.innerText =
+          "Good Foundation — Needs Improvement";
+
+      } else if (data.score < 82) {
+
+        auditStatus.innerText =
+          "Strong Foundation";
+
+      } else {
+
+        auditStatus.innerText =
+          "Very Strong Preliminary Score";
+
+      }
+
+    }
+
+
+    // --------------------------------
+    // Profile text
+    // --------------------------------
+
+    const profileText =
+      document.getElementById("profileText");
+
+    if (profileText) {
+
+      profileText.innerText =
+        data.profile.name
+          ? "Public profile name: " +
+            data.profile.name
+          : "Profile name could not be determined.";
+    }
+
+
+    // --------------------------------
+    // Keyword text
+    // --------------------------------
+
+    const keywordText =
+      document.getElementById("keywordText");
+
+    if (keywordText) {
+
+      keywordText.innerText =
+        "Keyword signals found from the public profile bio.";
+    }
+
+
+    // --------------------------------
+    // Content text
+    // --------------------------------
+
+    const contentText =
+      document.getElementById("contentText");
+
+    if (contentText) {
+
+      contentText.innerText =
+        "Public profile contains approximately " +
+        data.profile.media_count +
+        " posts.";
+    }
+
+
+    // --------------------------------
+    // Local / Discoverability text
+    // --------------------------------
+
+    const localText =
+      document.getElementById("localText");
+
+    if (localText) {
+
+      localText.innerText =
+        "Discoverability signals are based on publicly available profile information.";
+    }
+
+
+    // --------------------------------
+    // Strengths
+    // --------------------------------
+
+    const strengthsList =
+      document.getElementById("strengths");
+
+    if (strengthsList) {
+
+      strengthsList.innerHTML = "";
+
+      (data.strengths || []).forEach(function (item) {
+
+        const li =
+          document.createElement("li");
+
+        li.innerText = item;
+
+        strengthsList.appendChild(li);
+
+      });
+
+    }
+
+
+    // --------------------------------
+    // Opportunities
+    // --------------------------------
+
+    const issuesList =
+      document.getElementById("issues");
+
+    if (issuesList) {
+
+      issuesList.innerHTML = "";
+
+      (data.opportunities || []).forEach(function (item) {
+
+        const li =
+          document.createElement("li");
+
+        li.innerText = item;
+
+        issuesList.appendChild(li);
+
+      });
+
+    }
+
+
+    // --------------------------------
+    // Remove OAuth parameters
+    // --------------------------------
+
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+
+
+    // --------------------------------
+    // Scroll to audit
+    // --------------------------------
+
+    if (result) {
+
+      result.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }
+
+
   } catch (error) {
 
     console.error(
@@ -1054,9 +1290,6 @@ function connectInstagram() {
 
   window.location.href = instagramLoginUrl;
 }
-</script>
-
-<script>
 async function analyzeUsername(){
 
   const input = document.getElementById("username");
@@ -1319,8 +1552,3 @@ async function analyzeUsername(){
 
 } 
   // <-- analyzeUsername() CLOSE
-
-</script>
-
-</body>
-</html>
