@@ -427,14 +427,12 @@ Instagram SEO audit with optimization opportunities.
   
 <div class="audit" id="audit">
 
-<div class="audit" id="audit">
-
   <div class="input-row">
 
     <input
   id="username"
   type="text"
-  placeholder="@username અથવા Instagram profile URL"
+  placeholder="@username or Instagram profile URL"
   autocomplete="off"
 >
 
@@ -1887,18 +1885,18 @@ async function analyzeUsername(){
 
   } catch (error) {
 
+      } catch (error) {
+
     console.error(
       "Instagram audit error:",
       error
     );
-
 
     document.getElementById("loading").style.display =
       "none";
 
     document.getElementById("result").style.display =
       "none";
-
 
     alert(
       error.message ||
@@ -1907,10 +1905,14 @@ async function analyzeUsername(){
 
   }
 
+} // <-- analyzeUsername() CLOSE
+
+</script>
+
 <script>
 function connectInstagram() {
 
-  alert("Connect Instagram button is working!");
+  console.log("Instagram connect clicked");
 
   const instagramLoginUrl =
     "https://www.instagram.com/oauth/authorize" +
