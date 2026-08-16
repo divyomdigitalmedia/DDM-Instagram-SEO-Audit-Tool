@@ -161,7 +161,18 @@ console.log("Instagram audit data:", auditData);
       "&username=" +
       encodeURIComponent(profile.username);
 
-    return res.redirect(redirectUrl);
+       return res.redirect(redirectUrl);
+
+  } catch (error) {
+
+    console.error("Instagram callback error:", error);
+
+    return res.status(500).send(`
+      <h2>Instagram Login Error</h2>
+      <p>Something went wrong while connecting Instagram.</p>
+      <p>Please try again.</p>
+    `);
+
   }
 });
 
