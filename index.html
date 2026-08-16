@@ -432,11 +432,11 @@ Connect your Professional Instagram account to enable the full audit.
   <div class="input-row">
 
     <input
-      id="username"
-      type="text"
-      placeholder="@yourusername"
-      autocomplete="off"
-    >
+  id="username"
+  type="text"
+  placeholder="@username અથવા Instagram profile URL"
+  autocomplete="off"
+>
 
     <button onclick="analyzeUsername()">
       Analyze
@@ -736,22 +736,33 @@ window.addEventListener("DOMContentLoaded", function () {
 
 });
 
-function cleanUsername(value){
+function cleanUsername(value) {
 
-value=value.trim();
+  value = String(value || "").trim();
 
-value=value.replace(/^https?:\/\/(www\.)?instagram\.com\//i,"");
+  // Remove @
+  value = value.replace(/^@/, "");
 
-value=value.split("?")[0];
+  // Instagram URL
+  const match = value.match(
+    /(?:https?:\/\/)?(?:www\.)?instagram\.com\/([^/?#]+)/i
+  );
 
-value=value.replace(/^@/,"");
+  if (match) {
+    value = match[1];
+  }
 
-value=value.replace(/\/$/,"");
+  // Remove trailing slash / query / hash
+  value = value.split("?")[0];
+  value = value.split("#")[0];
+  value = value.replace(/\/+$/, "");
 
-return value.trim();
+  // Remove @ again if present
+  value = value.replace(/^@/, "");
 
+  return value.trim();
 }
-
+  
 function connectInstagram() {
 
   const instagramLoginUrl =
