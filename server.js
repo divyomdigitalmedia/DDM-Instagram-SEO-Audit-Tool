@@ -150,7 +150,7 @@ console.log(
   biography: profileData.biography || "",
   profile_picture_url: profileData.profile_picture_url || "",
   followers_count: profileData.followers_count || 0,
-  follows_count: profileData.follows_count || 0,
+  following_count: profileData.follows_count || 0,
   media_count: profileData.media_count || 0
 };
 
