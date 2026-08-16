@@ -130,7 +130,7 @@ app.get("/auth/instagram/callback", async (req, res) => {
 
     // --------------------------------
     // IMPORTANT:
-    // Do not display the access token.
+    // Do not dis  play the access token.
     // --------------------------------
 
     const auditData = {
@@ -185,157 +185,680 @@ console.log("Instagram audit data:", auditData);
 // Basic Audit API
 // -------------------------
 
-app.post("/api/audit", (req, res) => {
+// -------------------------
+// Public Instagram Audit
+// -------------------------
 
-  const profile = req.body.profile || {};
+app.post("/api/audit", async (req, res) => {
 
-  const username = String(profile.username || "")
-    .trim()
-    .replace(/^@/, "");
+  try {
 
-  const biography = String(profile.biography || "").trim();
-  const name = String(profile.name || "").trim();
+    // --------------------------------
+    // 1. Accept username OR Instagram URL
+    // --------------------------------
 
-  if (!username) {
-    return res.status(400).json({
-      success: false,
-      message: "Instagram profile data is required."
+    let input = String(
+      req.body.username ||
+      req.body.profile?.username ||
+      ""
+    ).trim();
+
+    if (!input) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Please enter an Instagram username or profile URL."
+      });
+    }
+
+    // Extract username from:
+    // @username
+    // username
+    // https://www.instagram.com/username/
+    // https://www.instagram.com/username/?hl=en
+
+    const urlMatch = input.match(
+      /(?:https?:\/\/)?(?:www\.)?instagram\.com\/([^/?#]+)/i
+    );
+
+    if (urlMatch) {
+      input = urlMatch[1];
+    }
+
+    const username = input
+      .replace(/^@/, "")
+      .split("?")[0]
+      .split("#")[0]
+      .replace(/\/+$/, "")
+      .trim();
+
+
+    // --------------------------------
+    // Validate username
+    // --------------------------------
+
+    if (!/^[a-zA-Z0-9._]{1,30}$/.test(username)) {
+
+      return res.status(400).json({
+        success: false,
+        message:
+          "Invalid Instagram username or profile URL."
+      });
+
+    }
+
+
+    // --------------------------------
+    // 2. Fetch public Instagram page
+    // --------------------------------
+
+    const instagramUrl =
+      `https://www.instagram.com/${encodeURIComponent(username)}/`;
+
+
+    const instagramResponse = await fetch(
+      instagramUrl,
+      {
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0 Safari/537.36",
+
+          "Accept":
+            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+
+          "Accept-Language":
+            "en-US,en;q=0.9"
+        },
+
+        redirect: "follow"
+      }
+    );
+
+
+    const html =
+      await instagramResponse.text();
+
+
+    // --------------------------------
+    // Instagram profile not available
+    // --------------------------------
+
+    if (
+      !instagramResponse.ok ||
+      !html
+    ) {
+
+      console.error(
+        "Instagram profile request failed:",
+        instagramResponse.status
+      );
+
+      return res.status(404).json({
+        success: false,
+        message:
+          "Instagram profile not found or could not be loaded. Please check the username."
+      });
+
+    }
+
+
+    const lowerHtml =
+      html.toLowerCase();
+
+
+    if (
+      lowerHtml.includes(
+        "sorry, this page isn't available"
+      ) ||
+      lowerHtml.includes(
+        "page isn't available"
+      )
+    ) {
+
+      return res.status(404).json({
+        success: false,
+        message:
+          "Instagram profile not found. Please check the username."
+      });
+
+    }
+
+
+    // --------------------------------
+    // Helper: read meta tags
+    // --------------------------------
+
+    function getMeta(property) {
+
+      const regex = new RegExp(
+        `<meta[^>]+(?:property|name)=["']${property}["'][^>]+content=["']([^"']*)["']`,
+        "i"
+      );
+
+      const match =
+        html.match(regex);
+
+      return match
+        ? match[1]
+        : "";
+    }
+
+
+    function decodeHtml(value) {
+
+      return String(value || "")
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&amp;/g, "&")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&#x27;/gi, "'")
+        .replace(/&#x2F;/gi, "/");
+
+    }
+
+
+    // --------------------------------
+    // Get public profile metadata
+    // --------------------------------
+
+    const title =
+      decodeHtml(
+        getMeta("og:title")
+      );
+
+    const description =
+      decodeHtml(
+        getMeta("og:description") ||
+        getMeta("description")
+      );
+
+    const profileImage =
+      decodeHtml(
+        getMeta("og:image")
+      );
+
+
+    // --------------------------------
+    // Do not generate fake data
+    // --------------------------------
+
+    if (
+      !title &&
+      !description &&
+      !profileImage
+    ) {
+
+      return res.status(422).json({
+        success: false,
+        message:
+          "Instagram did not expose enough public profile data for a free audit. Please try again later."
+      });
+
+    }
+
+
+    // --------------------------------
+    // Extract visible profile numbers
+    // --------------------------------
+
+    function extractNumber(patterns) {
+
+      for (const pattern of patterns) {
+
+        const match =
+          description.match(pattern) ||
+          title.match(pattern);
+
+        if (
+          match &&
+          match[1]
+        ) {
+
+          let value =
+            match[1]
+              .replace(/,/g, "")
+              .trim()
+              .toLowerCase();
+
+
+          if (value.endsWith("k")) {
+
+            return Math.round(
+              parseFloat(value) * 1000
+            );
+
+          }
+
+
+          if (value.endsWith("m")) {
+
+            return Math.round(
+              parseFloat(value) * 1000000
+            );
+
+          }
+
+
+          const number =
+            Number(value);
+
+          if (
+            Number.isFinite(number)
+          ) {
+            return number;
+          }
+
+        }
+
+      }
+
+      return 0;
+
+    }
+
+
+    const followers =
+      extractNumber([
+        /([\d.,]+[km]?)\s*followers/i,
+        /([\d.,]+[km]?)\s*follower/i
+      ]);
+
+
+    const following =
+      extractNumber([
+        /([\d.,]+[km]?)\s*following/i
+      ]);
+
+
+    const mediaCount =
+      extractNumber([
+        /([\d.,]+[km]?)\s*posts/i,
+        /([\d.,]+[km]?)\s*post/i
+      ]);
+
+
+    // --------------------------------
+    // Profile name
+    // --------------------------------
+
+    let name =
+      title
+        .replace(/\s*\(@[^)]*\).*$/i, "")
+        .replace(/\s*•\s*Instagram.*$/i, "")
+        .trim();
+
+
+    if (!name) {
+      name = username;
+    }
+
+
+    // --------------------------------
+    // Biography
+    // --------------------------------
+
+    let biography =
+      description.trim();
+
+
+    // --------------------------------
+    // SEO Analysis
+    // --------------------------------
+
+    let profileScore = 40;
+    let keywordScore = 40;
+    let contentScore = 40;
+    let discoverabilityScore = 35;
+
+
+    const strengths = [];
+    const opportunities = [];
+
+
+    // Profile SEO
+
+    if (
+      name &&
+      name !== username
+    ) {
+
+      profileScore += 20;
+
+      strengths.push(
+        "A descriptive profile name is publicly visible."
+      );
+
+    } else {
+
+      opportunities.push(
+        "Use a clear searchable name related to your niche."
+      );
+
+    }
+
+
+    if (
+      biography.length >= 50
+    ) {
+
+      profileScore += 20;
+
+      strengths.push(
+        "The public profile contains a meaningful bio."
+      );
+
+    } else {
+
+      opportunities.push(
+        "Expand the bio with niche keywords and a clear value proposition."
+      );
+
+    }
+
+
+    // Keyword SEO
+
+    if (
+      username.length >= 4 &&
+      username.length <= 20
+    ) {
+
+      keywordScore += 15;
+
+      strengths.push(
+        "Username has a practical length for branding."
+      );
+
+    } else {
+
+      opportunities.push(
+        "Consider a simpler and more memorable username."
+      );
+
+    }
+
+
+    const keywordWords =
+      biography
+        .toLowerCase()
+        .split(/[\s,|/•:.-]+/)
+        .filter(
+          word => word.length >= 4
+        );
+
+
+    const uniqueKeywords =
+      [
+        ...new Set(keywordWords)
+      ];
+
+
+    if (
+      uniqueKeywords.length >= 5
+    ) {
+
+      keywordScore += 25;
+
+      strengths.push(
+        "Bio contains multiple descriptive keyword signals."
+      );
+
+    } else {
+
+      opportunities.push(
+        "Add more specific niche keywords to your Instagram bio."
+      );
+
+    }
+
+
+    // Content SEO
+
+    if (
+      mediaCount >= 100
+    ) {
+
+      contentScore += 40;
+
+      strengths.push(
+        "Profile has an established public content library."
+      );
+
+    } else if (
+      mediaCount >= 10
+    ) {
+
+      contentScore += 25;
+
+      strengths.push(
+        "Profile has a developing content library."
+      );
+
+    } else if (
+      mediaCount > 0
+    ) {
+
+      contentScore += 10;
+
+      opportunities.push(
+        "Increase the consistency of searchable content."
+      );
+
+    } else {
+
+      opportunities.push(
+        "Public post count could not be reliably determined."
+      );
+
+    }
+
+
+    // Discoverability
+
+    if (
+      biography.length > 0
+    ) {
+
+      discoverabilityScore += 15;
+
+    }
+
+
+    if (
+      name &&
+      name !== username
+    ) {
+
+      discoverabilityScore += 15;
+
+    }
+
+
+    if (
+      mediaCount >= 10
+    ) {
+
+      discoverabilityScore += 15;
+
+    }
+
+
+    // Local signals
+
+    const localTerms = [
+      "jamnagar",
+      "rajkot",
+      "ahmedabad",
+      "surat",
+      "vadodara",
+      "gujarat",
+      "india",
+      "mumbai",
+      "delhi",
+      "pune",
+      "bangalore",
+      "bengaluru",
+      "baroda"
+    ];
+
+
+    const combinedText =
+      `${name} ${biography}`.toLowerCase();
+
+
+    const localMatches =
+      localTerms.filter(
+        location =>
+          combinedText.includes(location)
+      );
+
+
+    if (
+      localMatches.length > 0
+    ) {
+
+      discoverabilityScore += 10;
+
+      strengths.push(
+        `Local discovery signal found: ${localMatches.join(", ")}.`
+      );
+
+    } else {
+
+      opportunities.push(
+        "Add a location signal when local customers are important."
+      );
+
+    }
+
+
+    // Followers
+
+    if (
+      followers >= 10000
+    ) {
+
+      strengths.push(
+        "Profile has a substantial public follower base."
+      );
+
+    }
+
+
+    // Limit scores
+
+    profileScore =
+      Math.min(profileScore, 100);
+
+    keywordScore =
+      Math.min(keywordScore, 100);
+
+    contentScore =
+      Math.min(contentScore, 100);
+
+    discoverabilityScore =
+      Math.min(
+        discoverabilityScore,
+        100
+      );
+
+
+    // Overall score
+
+    const overallScore =
+      Math.round(
+        (
+          profileScore +
+          keywordScore +
+          contentScore +
+          discoverabilityScore
+        ) / 4
+      );
+
+
+    // --------------------------------
+    // Return actual public profile data
+    // --------------------------------
+
+    return res.json({
+
+      success: true,
+
+      profile: {
+
+        username,
+
+        name,
+
+        biography,
+
+        followers,
+
+        following,
+
+        media_count: mediaCount,
+
+        profile_picture_url:
+          profileImage
+
+      },
+
+
+      score:
+        overallScore,
+
+
+      categories: {
+
+        profileSEO:
+          profileScore,
+
+        keywordSEO:
+          keywordScore,
+
+        contentSEO:
+          contentScore,
+
+        discoverabilitySEO:
+          discoverabilityScore
+
+      },
+
+
+      strengths: [
+        ...new Set(strengths)
+      ],
+
+
+      opportunities: [
+        ...new Set(opportunities)
+      ],
+
+
+      notice:
+        "This is an independent preliminary Instagram SEO assessment based only on publicly accessible profile information."
+
     });
-  }
 
-  let profileScore = 50;
-  let keywordScore = 50;
-  let contentScore = 50;
-  let discoverabilityScore = 50;
 
-  const strengths = [];
-  const opportunities = [];
+  } catch (error) {
 
-  // Profile SEO
-
-  if (name.length >= 3) {
-    profileScore += 15;
-    strengths.push("Profile name is available.");
-  } else {
-    opportunities.push(
-      "Add a clear searchable name to your Instagram profile."
+    console.error(
+      "Instagram public audit error:",
+      error
     );
+
+    return res.status(500).json({
+
+      success: false,
+
+      message:
+        "Unable to analyze the Instagram profile right now. Please try again."
+
+    });
+
   }
-
-  if (biography.length >= 50) {
-    profileScore += 15;
-    strengths.push("Bio contains useful profile information.");
-  } else {
-    opportunities.push(
-      "Expand your bio with niche keywords and a clear value proposition."
-    );
-  }
-
-  if (biography.length >= 100) {
-    profileScore += 10;
-  }
-
-  // Keyword SEO
-
-  const keywordCount = biography
-    .split(/\s+/)
-    .filter(word => word.length >= 4)
-    .length;
-
-  if (keywordCount >= 5) {
-    keywordScore += 20;
-    strengths.push("Bio contains multiple descriptive terms.");
-  } else {
-    opportunities.push(
-      "Add more relevant niche keywords to your profile."
-    );
-  }
-
-  if (username.length >= 4 && username.length <= 20) {
-    keywordScore += 10;
-  }
-
-  // Content SEO
-
-  const mediaCount = Number(profile.media_count || 0);
-
-  if (mediaCount >= 10) {
-    contentScore += 25;
-    strengths.push("Profile has an established content library.");
-  } else if (mediaCount > 0) {
-    contentScore += 10;
-    opportunities.push(
-      "Increase the consistency of your content publishing."
-    );
-  } else {
-    opportunities.push(
-      "Create consistent content around searchable topics."
-    );
-  }
-
-  // Discoverability
-
-  if (biography.length > 0) {
-    discoverabilityScore += 15;
-  }
-
-  if (name.length > 0) {
-    discoverabilityScore += 15;
-  }
-
-  if (mediaCount >= 10) {
-    discoverabilityScore += 15;
-  }
-
-  if (discoverabilityScore < 65) {
-    opportunities.push(
-      "Improve profile signals and searchable content structure."
-    );
-  }
-
-  // Limit scores
-
-  profileScore = Math.min(profileScore, 100);
-  keywordScore = Math.min(keywordScore, 100);
-  contentScore = Math.min(contentScore, 100);
-  discoverabilityScore = Math.min(discoverabilityScore, 100);
-
-  const overallScore = Math.round(
-    (
-      profileScore +
-      keywordScore +
-      contentScore +
-      discoverabilityScore
-    ) / 4
-  );
-
-  return res.json({
-
-    success: true,
-
-    profile: {
-      username,
-      name,
-      biography,
-      media_count: mediaCount
-    },
-
-    score: overallScore,
-
-    categories: {
-      profileSEO: profileScore,
-      keywordSEO: keywordScore,
-      contentSEO: contentScore,
-      discoverabilitySEO: discoverabilityScore
-    },
-
-    strengths,
-    opportunities,
-
-    notice:
-      "This is an independent Instagram SEO assessment and not an official Instagram ranking score."
-
-  });
 
 });
 
