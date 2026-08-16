@@ -181,6 +181,10 @@ console.log("Instagram audit data:", auditData);
 // Basic Audit API
 // -------------------------
 
+// -------------------------
+// Basic Audit API
+// -------------------------
+
 app.post("/api/audit", (req, res) => {
 
   const profile = req.body.profile || {};
@@ -207,9 +211,7 @@ app.post("/api/audit", (req, res) => {
   const strengths = [];
   const opportunities = [];
 
-  // -------------------------
   // Profile SEO
-  // -------------------------
 
   if (name.length >= 3) {
     profileScore += 15;
@@ -233,15 +235,12 @@ app.post("/api/audit", (req, res) => {
     profileScore += 10;
   }
 
-  // -------------------------
   // Keyword SEO
-  // -------------------------
 
-  const keywordCount =
-    biography
-      .split(/\s+/)
-      .filter(word => word.length >= 4)
-      .length;
+  const keywordCount = biography
+    .split(/\s+/)
+    .filter(word => word.length >= 4)
+    .length;
 
   if (keywordCount >= 5) {
     keywordScore += 20;
@@ -256,9 +255,7 @@ app.post("/api/audit", (req, res) => {
     keywordScore += 10;
   }
 
-  // -------------------------
-  // Content
-  // -------------------------
+  // Content SEO
 
   const mediaCount = Number(profile.media_count || 0);
 
@@ -276,9 +273,7 @@ app.post("/api/audit", (req, res) => {
     );
   }
 
-  // -------------------------
   // Discoverability
-  // -------------------------
 
   if (biography.length > 0) {
     discoverabilityScore += 15;
@@ -298,9 +293,7 @@ app.post("/api/audit", (req, res) => {
     );
   }
 
-  // -------------------------
-  // Limits
-  // -------------------------
+  // Limit scores
 
   profileScore = Math.min(profileScore, 100);
   keywordScore = Math.min(keywordScore, 100);
@@ -316,7 +309,7 @@ app.post("/api/audit", (req, res) => {
     ) / 4
   );
 
-  res.json({
+  return res.json({
 
     success: true,
 
@@ -345,15 +338,6 @@ app.post("/api/audit", (req, res) => {
   });
 
 });
-  }
-
-  res.json({
-    success: true,
-    username: username,
-    notice: "Preliminary audit."
-  });
-});
-
 
 // -------------------------
 // HTML escaping
