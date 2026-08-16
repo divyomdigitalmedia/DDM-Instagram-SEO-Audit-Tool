@@ -482,6 +482,123 @@ Instagram SEO audit with optimization opportunities.
 Analyzing Instagram SEO...
 </div>
 
+  <div id="profileOverview"
+     style="
+       display:none;
+       margin:20px 0;
+       padding:20px;
+       background:#11131a;
+       border:1px solid #2a2d38;
+       border-radius:16px;
+     ">
+
+  <div style="
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:18px;
+  ">
+
+    <img
+      id="auditProfileImage"
+      src=""
+      alt="Instagram Profile"
+      style="
+        width:72px;
+        height:72px;
+        border-radius:50%;
+        object-fit:cover;
+        display:none;
+      "
+    >
+
+    <div>
+
+      <div
+        id="auditProfileName"
+        style="
+          font-size:22px;
+          font-weight:bold;
+        "
+      ></div>
+
+      <div
+        id="auditProfileUsername"
+        style="
+          color:#aaa;
+          margin-top:4px;
+        "
+      ></div>
+
+    </div>
+
+  </div>
+
+
+  <div style="
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    text-align:center;
+  ">
+
+    <div>
+      <div
+        id="auditFollowers"
+        style="
+          font-size:20px;
+          font-weight:bold;
+        "
+      >0</div>
+
+      <div style="color:#999;font-size:13px;">
+        Followers
+      </div>
+    </div>
+
+
+    <div>
+      <div
+        id="auditFollowing"
+        style="
+          font-size:20px;
+          font-weight:bold;
+        "
+      >0</div>
+
+      <div style="color:#999;font-size:13px;">
+        Following
+      </div>
+    </div>
+
+
+    <div>
+      <div
+        id="auditPosts"
+        style="
+          font-size:20px;
+          font-weight:bold;
+        "
+      >0</div>
+
+      <div style="color:#999;font-size:13px;">
+        Posts
+      </div>
+    </div>
+
+  </div>
+
+
+  <div
+    id="auditBiography"
+    style="
+      margin-top:18px;
+      color:#bbb;
+      line-height:1.6;
+    "
+  ></div>
+
+</div>
 
 <div class="result" id="result">
 
@@ -1146,6 +1263,109 @@ async function analyzeUsername(){
 
     const data = await response.json();
 
+    // --------------------------------
+// Display actual Instagram profile
+// --------------------------------
+
+const overview =
+  document.getElementById("profileOverview");
+
+if (overview) {
+
+  overview.style.display = "block";
+
+}
+
+
+const profileImage =
+  document.getElementById("auditProfileImage");
+
+if (
+  profileImage &&
+  data.profile.profile_picture_url
+) {
+
+  profileImage.src =
+    data.profile.profile_picture_url;
+
+  profileImage.style.display =
+    "block";
+
+}
+
+
+const profileName =
+  document.getElementById("auditProfileName");
+
+if (profileName) {
+
+  profileName.innerText =
+    data.profile.name ||
+    "Instagram Profile";
+
+}
+
+
+const profileUsername =
+  document.getElementById("auditProfileUsername");
+
+if (profileUsername) {
+
+  profileUsername.innerText =
+    "@" + data.profile.username;
+
+}
+
+
+const followers =
+  document.getElementById("auditFollowers");
+
+if (followers) {
+
+  followers.innerText =
+    Number(
+      data.profile.followers_count || 0
+    ).toLocaleString();
+
+}
+
+
+const following =
+  document.getElementById("auditFollowing");
+
+if (following) {
+
+  following.innerText =
+    Number(
+      data.profile.following_count || 0
+    ).toLocaleString();
+
+}
+
+
+const posts =
+  document.getElementById("auditPosts");
+
+if (posts) {
+
+  posts.innerText =
+    Number(
+      data.profile.media_count || 0
+    ).toLocaleString();
+
+}
+
+
+const biography =
+  document.getElementById("auditBiography");
+
+if (biography) {
+
+  biography.innerText =
+    data.profile.biography ||
+    "No public biography was available.";
+
+}
 
     // --------------------------------
     // Backend error
