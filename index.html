@@ -674,6 +674,38 @@ DDM Instagram SEO Audit is an independent service.
 
 <script>
 
+// --------------------------------
+// Check Instagram connection
+// --------------------------------
+
+window.addEventListener("DOMContentLoaded", function () {
+
+  const params = new URLSearchParams(window.location.search);
+
+  const connected = params.get("instagram_connected");
+  const username = params.get("username");
+
+  if (connected === "true" && username) {
+
+    const status = document.getElementById("instagramStatus");
+    const title = document.getElementById("instagramStatusTitle");
+    const text = document.getElementById("instagramStatusText");
+
+    if (status && title && text) {
+
+      status.style.display = "block";
+
+      title.innerText = "Instagram Connected ✓";
+
+      text.innerText =
+        "@" + username +
+        " connected successfully. Your Instagram SEO audit is ready.";
+    }
+
+  }
+
+});
+
 function cleanUsername(value){
 
 value=value.trim();
