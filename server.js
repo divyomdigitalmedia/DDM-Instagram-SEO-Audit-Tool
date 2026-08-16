@@ -477,6 +477,15 @@ app.post("/api/audit", async (req, res) => {
         /([\d.,]+[km]?)\s*post/i
       ]);
 
+    console.log("========== INSTAGRAM PUBLIC DATA ==========");
+console.log("USERNAME:", username);
+console.log("TITLE:", title);
+console.log("DESCRIPTION:", description);
+console.log("PROFILE IMAGE:", profileImage);
+console.log("FOLLOWERS:", followers);
+console.log("FOLLOWING:", following);
+console.log("POSTS:", mediaCount);
+console.log("==========================================");
 
     // --------------------------------
     // Profile name
@@ -501,6 +510,13 @@ app.post("/api/audit", async (req, res) => {
     let biography =
       description.trim();
 
+    console.log("========== PROFILE DATA ==========");
+console.log("NAME:", name);
+console.log("BIO:", biography);
+console.log("FOLLOWERS:", followers);
+console.log("FOLLOWING:", following);
+console.log("POSTS:", mediaCount);
+console.log("================================");
 
     // --------------------------------
     // SEO Analysis
