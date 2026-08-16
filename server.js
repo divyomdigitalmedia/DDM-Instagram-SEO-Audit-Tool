@@ -254,7 +254,6 @@ app.get("/api/free-audit", (req, res) => {
   const mediaCount =
     Number(profile.media_count || 0);
 
-
   // --------------------------------
   // SEO Scores
   // --------------------------------
