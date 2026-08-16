@@ -113,9 +113,20 @@ app.get("/auth/instagram/callback", async (req, res) => {
     // --------------------------------
 
     const profileResponse = await fetch(
-  `https://graph.instagram.com/me?fields=id,username&access_token=${encodeURIComponent(accessToken)}`
+  `https://graph.instagram.com/me?fields=id,username,name,biography,profile_picture_url,followers_count,follows_count,media_count&access_token=${encodeURIComponent(accessToken)}`
 );
     const profileData = await profileResponse.json();
+
+console.log(
+  "========== INSTAGRAM API RESPONSE =========="
+);
+
+console.log(
+  JSON.stringify(profileData, null, 2)
+);
+
+console.log(
+  "============================================");
 
     if (!profileResponse.ok) {
 
