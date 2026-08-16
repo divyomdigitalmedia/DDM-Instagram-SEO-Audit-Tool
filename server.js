@@ -496,43 +496,50 @@ app.get("/api/free-audit", (req, res) => {
 
   return res.json({
 
-    success: true,
+  success: true,
 
-    auditType: "free",
+  auditType: "free",
 
-    profile: {
-      username,
-      name,
-      biography,
-      followers_count: followers,
-      following_count: following,
-      media_count: mediaCount,
-      profile_picture_url:
-        profile.profile_picture_url || ""
-    },
+  profile: {
+    username: username,
 
-    score: overallScore,
+    name: name,
 
-    categories: {
-      profileSEO: profileScore,
-      keywordSEO: keywordScore,
-      contentSEO: contentScore,
-      discoverabilitySEO:
-        discoverabilityScore
-    },
+    biography: biography,
 
-    strengths: strengths.slice(0, 5),
+    followers_count: followers,
 
-    opportunities:
-      opportunities.slice(0, 5),
+    following_count: following,
 
-    notice:
-      "This is an independent preliminary Instagram SEO assessment and is not an official Instagram or Meta ranking score."
+    media_count: mediaCount,
 
-  });
+    profile_picture_url:
+      profileImage || ""
+  },
+
+  score: overallScore,
+
+  categories: {
+    profileSEO: profileScore,
+
+    keywordSEO: keywordScore,
+
+    contentSEO: contentScore,
+
+    discoverabilitySEO:
+      discoverabilityScore
+  },
+
+  strengths:
+    strengths.slice(0, 5),
+
+  opportunities:
+    opportunities.slice(0, 5),
+
+  notice:
+    "This is an independent preliminary Instagram SEO assessment and is not an official Instagram or Meta ranking score."
 
 });
-
 // -------------------------
 // Public Instagram Audit
 // -------------------------
