@@ -891,6 +891,94 @@ window.addEventListener("DOMContentLoaded", async function () {
     const data =
       await response.json();
 
+    // --------------------------------
+// Display actual Instagram profile
+// --------------------------------
+
+const overview =
+  document.getElementById("profileOverview");
+
+if (overview) {
+  overview.style.display = "block";
+}
+
+
+const profileImage =
+  document.getElementById("auditProfileImage");
+
+if (
+  profileImage &&
+  data.profile.profile_picture_url
+) {
+  profileImage.src =
+    data.profile.profile_picture_url;
+
+  profileImage.style.display =
+    "block";
+}
+
+
+const profileName =
+  document.getElementById("auditProfileName");
+
+if (profileName) {
+  profileName.innerText =
+    data.profile.name ||
+    "Instagram Profile";
+}
+
+
+const profileUsername =
+  document.getElementById("auditProfileUsername");
+
+if (profileUsername) {
+  profileUsername.innerText =
+    "@" + data.profile.username;
+}
+
+
+const followers =
+  document.getElementById("auditFollowers");
+
+if (followers) {
+  followers.innerText =
+    Number(
+      data.profile.followers_count || 0
+    ).toLocaleString();
+}
+
+
+const following =
+  document.getElementById("auditFollowing");
+
+if (following) {
+  following.innerText =
+    Number(
+      data.profile.following_count || 0
+    ).toLocaleString();
+}
+
+
+const posts =
+  document.getElementById("auditPosts");
+
+if (posts) {
+  posts.innerText =
+    Number(
+      data.profile.media_count || 0
+    ).toLocaleString();
+}
+
+
+const biography =
+  document.getElementById("auditBiography");
+
+if (biography) {
+  biography.innerText =
+    data.profile.biography ||
+    "No public biography was available.";
+}
+
 
     // --------------------------------
     // Hide loading
@@ -1262,110 +1350,6 @@ async function analyzeUsername(){
 
 
     const data = await response.json();
-
-    // --------------------------------
-// Display actual Instagram profile
-// --------------------------------
-
-const overview =
-  document.getElementById("profileOverview");
-
-if (overview) {
-
-  overview.style.display = "block";
-
-}
-
-
-const profileImage =
-  document.getElementById("auditProfileImage");
-
-if (
-  profileImage &&
-  data.profile.profile_picture_url
-) {
-
-  profileImage.src =
-    data.profile.profile_picture_url;
-
-  profileImage.style.display =
-    "block";
-
-}
-
-
-const profileName =
-  document.getElementById("auditProfileName");
-
-if (profileName) {
-
-  profileName.innerText =
-    data.profile.name ||
-    "Instagram Profile";
-
-}
-
-
-const profileUsername =
-  document.getElementById("auditProfileUsername");
-
-if (profileUsername) {
-
-  profileUsername.innerText =
-    "@" + data.profile.username;
-
-}
-
-
-const followers =
-  document.getElementById("auditFollowers");
-
-if (followers) {
-
-  followers.innerText =
-    Number(
-      data.profile.followers_count || 0
-    ).toLocaleString();
-
-}
-
-
-const following =
-  document.getElementById("auditFollowing");
-
-if (following) {
-
-  following.innerText =
-    Number(
-      data.profile.following_count || 0
-    ).toLocaleString();
-
-}
-
-
-const posts =
-  document.getElementById("auditPosts");
-
-if (posts) {
-
-  posts.innerText =
-    Number(
-      data.profile.media_count || 0
-    ).toLocaleString();
-
-}
-
-
-const biography =
-  document.getElementById("auditBiography");
-
-if (biography) {
-
-  biography.innerText =
-    data.profile.biography ||
-    "No public biography was available.";
-
-}
 
     // --------------------------------
     // Backend error
