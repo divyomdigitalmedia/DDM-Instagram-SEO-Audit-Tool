@@ -227,11 +227,10 @@ app.get("/api/free-audit", async (req, res) => {
     });
   }
 
-  const profiles =
-    global.instagramProfiles || {};
+ const instagramUrl =
+  `https://www.instagram.com/${encodeURIComponent(username)}/`;
 
-  const profile =
-    profiles[username];
+const instagramResponse = await fetch(...)
 
   if (!profile) {
     return res.status(404).json({
