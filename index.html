@@ -708,28 +708,353 @@ DDM Instagram SEO Audit is an independent service.
 // Check Instagram connection
 // --------------------------------
 
-window.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("DOMContentLoaded", async function () {
 
   const params = new URLSearchParams(window.location.search);
 
   const connected = params.get("instagram_connected");
   const username = params.get("username");
 
-  if (connected === "true" && username) {
+  if (connected !== "true" || !username) {
+    return;
+  }
 
-    const status = document.getElementById("instagramStatus");
-    const title = document.getElementById("instagramStatusTitle");
-    const text = document.getElementById("instagramStatusText");
 
-    if (status && title && text) {
+  // --------------------------------
+  // Instagram connected message
+  // --------------------------------
 
-      status.style.display = "block";
+  const status =
+    document.getElementById("instagramStatus");
 
-      title.innerText = "Instagram Connected ✓";
+  const title =
+    document.getElementById("instagramStatusTitle");
+
+  const text =
+    document.getElementById("instagramStatusText");
+
+
+  if (status && title && text) {
+
+    status.style.display = "block";
+
+    title.innerText =
+      "Instagram Connected ✓";
+
+    text.innerText =
+      "@" + username +
+      " connected successfully. Loading your free SEO audit...";
+  }
+
+
+  // --------------------------------
+  // Show loading
+  // --------------------------------
+
+  const loading =
+    document.getElementById("loading");
+
+  if (loading) {
+    loading.style.display = "block";
+  }
+
+
+  try {
+
+    // --------------------------------
+    // Get actual Instagram profile data
+    // --------------------------------
+
+    const response = await fetch(
+      "https://ddm-instagram-seo-audit-tool.onrender.com/api/free-audit?username=" +
+      encodeURIComponent(username)
+    );
+
+
+    const data =
+      await response.json();
+
+
+    // --------------------------------
+    // Hide loading
+    // --------------------------------
+
+    if (loading) {
+      loading.style.display = "none";
+    }
+
+
+    // --------------------------------
+    // Error
+    // --------------------------------
+
+    if (!response.ok || !data.success) {
+
+      if (text) {
+
+        text.innerText =
+          data.message ||
+          "Free audit could not be generated.";
+      }
+
+      return;
+    }
+
+
+    // --------------------------------
+    // Display audit
+    // --------------------------------
+
+    const result =
+      document.getElementById("result");
+
+    if (result) {
+      result.style.display = "block";
+    }
+
+
+    // Score
+
+    const score =
+      document.getElementById("score");
+
+    if (score) {
+      score.innerText = data.score;
+    }
+
+
+    // Profile SEO
+
+    const profileBar =
+      document.getElementById("profileBar");
+
+    if (profileBar) {
+      profileBar.style.width =
+        data.categories.profileSEO + "%";
+    }
+
+
+    // Keyword SEO
+
+    const keywordBar =
+      document.getElementById("keywordBar");
+
+    if (keywordBar) {
+      keywordBar.style.width =
+        data.categories.keywordSEO + "%";
+    }
+
+
+    // Content SEO
+
+    const contentBar =
+      document.getElementById("contentBar");
+
+    if (contentBar) {
+      contentBar.style.width =
+        data.categories.contentSEO + "%";
+    }
+
+
+    // Discoverability
+
+    const localBar =
+      document.getElementById("localBar");
+
+    if (localBar) {
+      localBar.style.width =
+        data.categories.discoverabilitySEO + "%";
+    }
+
+
+    // --------------------------------
+    // Status
+    // --------------------------------
+
+    const auditStatus =
+      document.getElementById("status");
+
+    if (auditStatus) {
+
+      if (data.score < 55) {
+
+        auditStatus.innerText =
+          "Needs Significant Optimization";
+
+      } else if (data.score < 70) {
+
+        auditStatus.innerText =
+          "Good Foundation — Needs Improvement";
+
+      } else if (data.score < 82) {
+
+        auditStatus.innerText =
+          "Strong Foundation";
+
+      } else {
+
+        auditStatus.innerText =
+          "Very Strong Preliminary Score";
+
+      }
+
+    }
+
+
+    // --------------------------------
+    // Profile text
+    // --------------------------------
+
+    const profileText =
+      document.getElementById("profileText");
+
+    if (profileText) {
+
+      profileText.innerText =
+        data.profile.name
+          ? "Public profile name: " +
+            data.profile.name
+          : "Profile name could not be determined.";
+    }
+
+
+    // --------------------------------
+    // Keyword text
+    // --------------------------------
+
+    const keywordText =
+      document.getElementById("keywordText");
+
+    if (keywordText) {
+
+      keywordText.innerText =
+        "Keyword signals found from the public profile bio.";
+    }
+
+
+    // --------------------------------
+    // Content text
+    // --------------------------------
+
+    const contentText =
+      document.getElementById("contentText");
+
+    if (contentText) {
+
+      contentText.innerText =
+        "Public profile contains approximately " +
+        data.profile.media_count +
+        " posts.";
+    }
+
+
+    // --------------------------------
+    // Local / Discoverability text
+    // --------------------------------
+
+    const localText =
+      document.getElementById("localText");
+
+    if (localText) {
+
+      localText.innerText =
+        "Discoverability signals are based on publicly available profile information.";
+    }
+
+
+    // --------------------------------
+    // Strengths
+    // --------------------------------
+
+    const strengthsList =
+      document.getElementById("strengths");
+
+    if (strengthsList) {
+
+      strengthsList.innerHTML = "";
+
+      (data.strengths || []).forEach(function (item) {
+
+        const li =
+          document.createElement("li");
+
+        li.innerText = item;
+
+        strengthsList.appendChild(li);
+
+      });
+
+    }
+
+
+    // --------------------------------
+    // Opportunities
+    // --------------------------------
+
+    const issuesList =
+      document.getElementById("issues");
+
+    if (issuesList) {
+
+      issuesList.innerHTML = "";
+
+      (data.opportunities || []).forEach(function (item) {
+
+        const li =
+          document.createElement("li");
+
+        li.innerText = item;
+
+        issuesList.appendChild(li);
+
+      });
+
+    }
+
+
+    // --------------------------------
+    // Remove OAuth parameters
+    // --------------------------------
+
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+
+
+    // --------------------------------
+    // Scroll to audit
+    // --------------------------------
+
+    if (result) {
+
+      result.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Free audit error:",
+      error
+    );
+
+
+    if (loading) {
+      loading.style.display = "none";
+    }
+
+
+    if (text) {
 
       text.innerText =
-        "@" + username +
-        " connected successfully. Your Instagram SEO audit is ready.";
+        "Instagram connected, but the free audit could not be loaded. Please try again.";
+
     }
 
   }
