@@ -210,7 +210,9 @@ return res.redirect(redirectUrl);
 // Free Instagram Audit
 // -------------------------
 
-app.get("/api/free-audit", (req, res) => {
+app.get("/api/free-audit", async (req, res) => {
+
+  try {
 
   const username = String(
     req.query.username || ""
